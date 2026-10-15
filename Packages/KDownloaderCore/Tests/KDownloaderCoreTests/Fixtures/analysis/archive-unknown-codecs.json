@@ -1,0 +1,51 @@
+{
+ "_type": "video",
+ "id": "BigBuckBunny_124",
+ "title": "Big Buck Bunny",
+ "uploader": "jake@archive.org",
+ "duration": 596.46,
+ "thumbnail": "https://archive.org/download/BigBuckBunny_124/BigBuckBunny_124.thumbs/Content/big_buck_bunny_720p_surround_000585.jpg",
+ "webpage_url": "https://archive.org/details/BigBuckBunny_124",
+ "extractor_key": "ArchiveOrg",
+ "formats": [
+  {
+   "format_id": "0",
+   "format_note": "derivative",
+   "ext": "ogv",
+   "protocol": "https",
+   "width": 533,
+   "height": 300,
+   "tbr": null,
+   "vbr": null,
+   "abr": null,
+   "filesize": 46935223,
+   "dynamic_range": "SDR"
+  },
+  {
+   "format_id": "1",
+   "format_note": "derivative",
+   "ext": "mp4",
+   "protocol": "https",
+   "width": 640,
+   "height": 360,
+   "tbr": null,
+   "vbr": null,
+   "abr": null,
+   "filesize": 61878609,
+   "dynamic_range": "SDR"
+  },
+  {
+   "format_id": "2",
+   "format_note": "derivative",
+   "ext": "avi",
+   "protocol": "https",
+   "width": 1280,
+   "height": 720,
+   "tbr": null,
+   "vbr": null,
+   "abr": null,
+   "filesize": 332243668,
+   "dynamic_range": "SDR"
+  }
+ ]
+}

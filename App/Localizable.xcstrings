@@ -1,0 +1,959 @@
+{
+  "sourceLanguage": "en",
+  "strings": {
+    "%@ of %@": {
+      "localizations": {
+        "ru": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%1$@ из %2$@"
+          }
+        }
+      }
+    },
+    "%@ remaining": {
+      "localizations": {
+        "ru": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "осталось %@"
+          }
+        }
+      }
+    },
+    "%@ → AAC": {
+      "localizations": {
+        "ru": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%@ → AAC"
+          }
+        }
+      }
+    },
+    "%@/s": {
+      "localizations": {
+        "ru": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%@/с"
+          }
+        }
+      }
+    },
+    "About kDownloader": {
+      "localizations": {
+        "ru": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "О программе kDownloader"
+          }
+        }
+      }
+    },
+    "Analyze": {
+      "localizations": {
+        "ru": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Анализировать"
+          }
+        }
+      }
+    },
+    "Analyzing…": {
+      "localizations": {
+        "ru": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Анализ…"
+          }
+        }
+      }
+    },
+    "Ask when needed": {
+      "localizations": {
+        "ru": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Спрашивать при необходимости"
+          }
+        }
+      }
+    },
+    "Audio": {
+      "localizations": {
+        "ru": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Аудио"
+          }
+        }
+      }
+    },
+    "Best compatible": {
+      "localizations": {
+        "ru": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Лучшее совместимое"
+          }
+        }
+      }
+    },
+    "Best compatible (%@p)": {
+      "localizations": {
+        "ru": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Лучшее совместимое (%@p)"
+          }
+        }
+      }
+    },
+    "Bundled tool “%@” is not working: %@": {
+      "localizations": {
+        "ru": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Встроенный инструмент «%1$@» не работает: %2$@"
+          }
+        }
+      }
+    },
+    "Cancel": {
+      "localizations": {
+        "ru": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Отменить"
+          }
+        }
+      }
+    },
+    "Cannot access Safari cookies": {
+      "localizations": {
+        "ru": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Нет доступа к cookies Safari"
+          }
+        }
+      }
+    },
+    "Cannot access browser cookies": {
+      "localizations": {
+        "ru": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Нет доступа к cookies браузера"
+          }
+        }
+      }
+    },
+    "Cannot write to the destination folder": {
+      "localizations": {
+        "ru": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Нет доступа к папке сохранения"
+          }
+        }
+      }
+    },
+    "Change…": {
+      "localizations": {
+        "ru": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Изменить…"
+          }
+        }
+      }
+    },
+    "Check the link and try again.": {
+      "localizations": {
+        "ru": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Проверьте ссылку и попробуйте снова."
+          }
+        }
+      }
+    },
+    "Check your internet connection and try again.": {
+      "localizations": {
+        "ru": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Проверьте подключение к интернету и попробуйте снова."
+          }
+        }
+      }
+    },
+    "Choose": {
+      "localizations": {
+        "ru": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Выбрать"
+          }
+        }
+      }
+    },
+    "Choose another folder or check its permissions.": {
+      "localizations": {
+        "ru": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Выберите другую папку или проверьте права доступа к ней."
+          }
+        }
+      }
+    },
+    "Cookies from browser:": {
+      "localizations": {
+        "ru": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Cookies из браузера:"
+          }
+        }
+      }
+    },
+    "Details": {
+      "localizations": {
+        "ru": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Подробности"
+          }
+        }
+      }
+    },
+    "Don't Use": {
+      "localizations": {
+        "ru": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Не использовать"
+          }
+        }
+      }
+    },
+    "Don't use": {
+      "localizations": {
+        "ru": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Не использовать"
+          }
+        }
+      }
+    },
+    "Download": {
+      "localizations": {
+        "ru": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Загрузить"
+          }
+        }
+      }
+    },
+    "Download complete": {
+      "localizations": {
+        "ru": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Загрузка завершена"
+          }
+        }
+      }
+    },
+    "Downloading audio": {
+      "localizations": {
+        "ru": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Загрузка аудио"
+          }
+        }
+      }
+    },
+    "Downloading video": {
+      "localizations": {
+        "ru": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Загрузка видео"
+          }
+        }
+      }
+    },
+    "Export…": {
+      "localizations": {
+        "ru": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Экспортировать…"
+          }
+        }
+      }
+    },
+    "Formats:": {
+      "localizations": {
+        "ru": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Форматы:"
+          }
+        }
+      }
+    },
+    "Free up some space or choose another folder.": {
+      "localizations": {
+        "ru": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Освободите место на диске или выберите другую папку."
+          }
+        }
+      }
+    },
+    "Give kDownloader Full Disk Access in System Settings → Privacy & Security, then try again.": {
+      "localizations": {
+        "ru": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Дайте kDownloader полный доступ к диску в Системных настройках → Конфиденциальность и безопасность и попробуйте снова."
+          }
+        }
+      }
+    },
+    "Hardware decoding only on M3 and later": {
+      "localizations": {
+        "ru": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Аппаратное декодирование только на M3 и новее"
+          }
+        }
+      }
+    },
+    "Included in the video": {
+      "localizations": {
+        "ru": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Входит в видео"
+          }
+        }
+      }
+    },
+    "Invalid link": {
+      "localizations": {
+        "ru": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Некорректная ссылка"
+          }
+        }
+      }
+    },
+    "Lists every format in the Video and Audio menus, including ones that may not open in QuickTime.": {
+      "localizations": {
+        "ru": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Показывать в меню «Видео» и «Аудио» все форматы, включая те, что могут не открыться в QuickTime."
+          }
+        }
+      }
+    },
+    "Live streams are not supported": {
+      "localizations": {
+        "ru": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Прямые трансляции не поддерживаются"
+          }
+        }
+      }
+    },
+    "Log": {
+      "localizations": {
+        "ru": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Журнал"
+          }
+        }
+      }
+    },
+    "May not open in QuickTime": {
+      "localizations": {
+        "ru": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Может не открыться в QuickTime"
+          }
+        }
+      }
+    },
+    "Members only": {
+      "localizations": {
+        "ru": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Только для подписчиков"
+          }
+        }
+      }
+    },
+    "New Download": {
+      "localizations": {
+        "ru": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Новая загрузка"
+          }
+        }
+      }
+    },
+    "No audio": {
+      "localizations": {
+        "ru": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Без звука"
+          }
+        }
+      }
+    },
+    "No audio tracks": {
+      "localizations": {
+        "ru": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Нет аудиодорожек"
+          }
+        }
+      }
+    },
+    "No compatible formats — turn on “Show all formats” in Settings": {
+      "localizations": {
+        "ru": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Совместимых форматов нет — включите «Показать все форматы» в Настройках"
+          }
+        }
+      }
+    },
+    "No network connection": {
+      "localizations": {
+        "ru": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Нет подключения к сети"
+          }
+        }
+      }
+    },
+    "No supported browser is installed.": {
+      "localizations": {
+        "ru": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Не установлен ни один поддерживаемый браузер."
+          }
+        }
+      }
+    },
+    "No video (audio only)": {
+      "localizations": {
+        "ru": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Без видео (только аудио)"
+          }
+        }
+      }
+    },
+    "No video yet": {
+      "localizations": {
+        "ru": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Видео не выбрано"
+          }
+        }
+      }
+    },
+    "Not available in your region": {
+      "localizations": {
+        "ru": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Недоступно в вашем регионе"
+          }
+        }
+      }
+    },
+    "Not enough disk space": {
+      "localizations": {
+        "ru": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Недостаточно места на диске"
+          }
+        }
+      }
+    },
+    "Only people the owner shared it with can watch this video.": {
+      "localizations": {
+        "ru": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Это видео могут смотреть только те, с кем владелец им поделился."
+          }
+        }
+      }
+    },
+    "Open Log": {
+      "localizations": {
+        "ru": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Открыть журнал"
+          }
+        }
+      }
+    },
+    "Open Privacy Settings": {
+      "localizations": {
+        "ru": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Открыть настройки конфиденциальности"
+          }
+        }
+      }
+    },
+    "Original": {
+      "localizations": {
+        "ru": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Оригинал"
+          }
+        }
+      }
+    },
+    "Original (%@)": {
+      "localizations": {
+        "ru": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Оригинал (%@)"
+          }
+        }
+      }
+    },
+    "Original language": {
+      "localizations": {
+        "ru": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Язык оригинала"
+          }
+        }
+      }
+    },
+    "Paste a link to a single video.": {
+      "localizations": {
+        "ru": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Вставьте ссылку на отдельное видео."
+          }
+        }
+      }
+    },
+    "Paste a link to a video and press Analyze.": {
+      "localizations": {
+        "ru": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Вставьте ссылку на видео и нажмите «Анализировать»."
+          }
+        }
+      }
+    },
+    "Playlists and channels are not supported": {
+      "localizations": {
+        "ru": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Плейлисты и каналы не поддерживаются"
+          }
+        }
+      }
+    },
+    "Preparing…": {
+      "localizations": {
+        "ru": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Подготовка…"
+          }
+        }
+      }
+    },
+    "Private video": {
+      "localizations": {
+        "ru": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Приватное видео"
+          }
+        }
+      }
+    },
+    "Processing": {
+      "localizations": {
+        "ru": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Обработка"
+          }
+        }
+      }
+    },
+    "Retry": {
+      "localizations": {
+        "ru": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Повторить"
+          }
+        }
+      }
+    },
+    "Save to:": {
+      "localizations": {
+        "ru": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Сохранить в:"
+          }
+        }
+      }
+    },
+    "Show all formats": {
+      "localizations": {
+        "ru": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Показать все форматы"
+          }
+        }
+      }
+    },
+    "Show in Finder": {
+      "localizations": {
+        "ru": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Показать в Finder"
+          }
+        }
+      }
+    },
+    "Sign-in required": {
+      "localizations": {
+        "ru": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Требуется вход"
+          }
+        }
+      }
+    },
+    "Site is rate limiting requests": {
+      "localizations": {
+        "ru": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Площадка ограничила запросы"
+          }
+        }
+      }
+    },
+    "Site not supported": {
+      "localizations": {
+        "ru": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Площадка не поддерживается"
+          }
+        }
+      }
+    },
+    "Something went wrong. The log has the details.": {
+      "localizations": {
+        "ru": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Что-то пошло не так. Подробности — в журнале."
+          }
+        }
+      }
+    },
+    "The app is damaged — please reinstall it": {
+      "localizations": {
+        "ru": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Приложение повреждено — переустановите его"
+          }
+        }
+      }
+    },
+    "The downloaded streams could not be processed.": {
+      "localizations": {
+        "ru": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Не удалось обработать загруженные потоки."
+          }
+        }
+      }
+    },
+    "The log is not available.": {
+      "localizations": {
+        "ru": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Журнал недоступен."
+          }
+        }
+      }
+    },
+    "The owner has not made this video available in your region.": {
+      "localizations": {
+        "ru": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Владелец не сделал это видео доступным в вашем регионе."
+          }
+        }
+      }
+    },
+    "The previously selected folder is not available, so Downloads is used.": {
+      "localizations": {
+        "ru": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Ранее выбранная папка недоступна, поэтому используется папка «Загрузки»."
+          }
+        }
+      }
+    },
+    "The site has temporarily limited requests. Wait a while and try again.": {
+      "localizations": {
+        "ru": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Площадка временно ограничила запросы. Подождите немного и попробуйте снова."
+          }
+        }
+      }
+    },
+    "The site requires signing in to watch this video.": {
+      "localizations": {
+        "ru": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Чтобы посмотреть это видео, площадка требует войти в аккаунт."
+          }
+        }
+      }
+    },
+    "The video may have been deleted or made unavailable.": {
+      "localizations": {
+        "ru": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Возможно, видео удалено или скрыто."
+          }
+        }
+      }
+    },
+    "This video is available only to channel members or subscribers.": {
+      "localizations": {
+        "ru": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Это видео доступно только спонсорам или подписчикам канала."
+          }
+        }
+      }
+    },
+    "This video needs you to be signed in. kDownloader can use the cookies of a browser where you are signed in to the site. Cookies are read only for this download and are never stored.": {
+      "localizations": {
+        "ru": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Для этого видео нужно войти в аккаунт. kDownloader может использовать cookies браузера, в котором вы вошли на эту площадку. Cookies читаются только для этой загрузки и нигде не сохраняются."
+          }
+        }
+      }
+    },
+    "Try again after the stream has ended.": {
+      "localizations": {
+        "ru": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Попробуйте снова после окончания трансляции."
+          }
+        }
+      }
+    },
+    "Unknown error": {
+      "localizations": {
+        "ru": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Неизвестная ошибка"
+          }
+        }
+      }
+    },
+    "Use cookies from your browser?": {
+      "localizations": {
+        "ru": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Использовать cookies браузера?"
+          }
+        }
+      }
+    },
+    "Used only when a video needs signing in, after a first attempt without cookies.": {
+      "localizations": {
+        "ru": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Используются, только если видео требует входа, — после первой попытки без cookies."
+          }
+        }
+      }
+    },
+    "Version %@": {
+      "localizations": {
+        "ru": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Версия %@"
+          }
+        }
+      }
+    },
+    "Video": {
+      "localizations": {
+        "ru": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Видео"
+          }
+        }
+      }
+    },
+    "Video link": {
+      "localizations": {
+        "ru": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Ссылка на видео"
+          }
+        }
+      }
+    },
+    "Video processing failed": {
+      "localizations": {
+        "ru": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Ошибка обработки видео"
+          }
+        }
+      }
+    },
+    "Video unavailable or removed": {
+      "localizations": {
+        "ru": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Видео недоступно или удалено"
+          }
+        }
+      }
+    },
+    "Videos from this site cannot be downloaded.": {
+      "localizations": {
+        "ru": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Видео с этой площадки скачать нельзя."
+          }
+        }
+      }
+    },
+    "Will be saved as .%@": {
+      "localizations": {
+        "ru": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Будет сохранено как .%@"
+          }
+        }
+      }
+    },
+    "You can change this later in Settings.": {
+      "localizations": {
+        "ru": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Это можно изменить позже в Настройках."
+          }
+        }
+      }
+    },
+    "kDownloader": {
+      "shouldTranslate": false
+    },
+    "kDownloader could not read cookies from the selected browser.": {
+      "localizations": {
+        "ru": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "kDownloader не удалось прочитать cookies выбранного браузера."
+          }
+        }
+      }
+    },
+    "unknown codec": {
+      "localizations": {
+        "ru": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "неизвестный кодек"
+          }
+        }
+      }
+    }
+  },
+  "version": "1.0"
+}

@@ -1,0 +1,28 @@
+{
+ "_type": "playlist",
+ "id": "@YouTube",
+ "title": "YouTube",
+ "uploader": "YouTube",
+ "channel": "YouTube",
+ "channel_id": "UCBR8-60-B28hp2BmDPdntcQ",
+ "webpage_url": "https://www.youtube.com/@YouTube",
+ "extractor_key": "YoutubeTab",
+ "playlist_count": 3,
+ "entries": [
+  {
+   "_type": "playlist",
+   "id": "UCBR8-60-B28hp2BmDPdntcQ",
+   "title": "YouTube - Videos"
+  },
+  {
+   "_type": "playlist",
+   "id": "UCBR8-60-B28hp2BmDPdntcQ",
+   "title": "YouTube - Live"
+  },
+  {
+   "_type": "playlist",
+   "id": "UCBR8-60-B28hp2BmDPdntcQ",
+   "title": "YouTube - Shorts"
+  }
+ ]
+}

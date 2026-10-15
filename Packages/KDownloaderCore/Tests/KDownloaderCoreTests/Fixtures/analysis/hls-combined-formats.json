@@ -1,0 +1,80 @@
+{
+ "_type": "video",
+ "id": "x36xhzz",
+ "title": "x36xhzz",
+ "duration": 634,
+ "webpage_url": "https://test-streams.mux.dev/x36xhzz/x36xhzz.m3u8",
+ "extractor_key": "Generic",
+ "formats": [
+  {
+   "format_id": "240",
+   "ext": "mp4",
+   "protocol": "m3u8_native",
+   "vcodec": "avc1.42000d",
+   "acodec": "mp4a.40.5",
+   "width": 320,
+   "height": 184,
+   "fps": null,
+   "tbr": 246.44,
+   "vbr": null,
+   "abr": null,
+   "dynamic_range": "SDR"
+  },
+  {
+   "format_id": "380",
+   "ext": "mp4",
+   "protocol": "m3u8_native",
+   "vcodec": "avc1.420016",
+   "acodec": "mp4a.40.5",
+   "width": 512,
+   "height": 288,
+   "fps": null,
+   "tbr": 460.56,
+   "vbr": null,
+   "abr": null,
+   "dynamic_range": "SDR"
+  },
+  {
+   "format_id": "480",
+   "ext": "mp4",
+   "protocol": "m3u8_native",
+   "vcodec": "avc1.64001f",
+   "acodec": "mp4a.40.2",
+   "width": 848,
+   "height": 480,
+   "fps": null,
+   "tbr": 836.28,
+   "vbr": null,
+   "abr": null,
+   "dynamic_range": "SDR"
+  },
+  {
+   "format_id": "720",
+   "ext": "mp4",
+   "protocol": "m3u8_native",
+   "vcodec": "avc1.64001f",
+   "acodec": "mp4a.40.2",
+   "width": 1280,
+   "height": 720,
+   "fps": null,
+   "tbr": 2149.28,
+   "vbr": null,
+   "abr": null,
+   "dynamic_range": "SDR"
+  },
+  {
+   "format_id": "1080",
+   "ext": "mp4",
+   "protocol": "m3u8_native",
+   "vcodec": "avc1.640028",
+   "acodec": "mp4a.40.2",
+   "width": 1920,
+   "height": 1080,
+   "fps": null,
+   "tbr": 6221.6,
+   "vbr": null,
+   "abr": null,
+   "dynamic_range": "SDR"
+  }
+ ]
+}

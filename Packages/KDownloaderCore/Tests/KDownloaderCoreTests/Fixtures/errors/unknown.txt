@@ -1,0 +1,2 @@
+WARNING: [youtube] abcdefghijk: Some formats may be missing
+ERROR: [youtube] abcdefghijk: Something completely unexpected happened (code 42)

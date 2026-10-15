@@ -1,0 +1,31 @@
+[youtube] Extracting URL: https://www.youtube.com/watch?v=jNQXAC9IVRw
+[youtube] jNQXAC9IVRw: Downloading webpage
+[youtube] jNQXAC9IVRw: Downloading visionos player API JSON
+[youtube] jNQXAC9IVRw: Downloading m3u8 information
+[info] jNQXAC9IVRw: Downloading 1 format(s): 134+140
+[download] Destination: /Users/someone/Downloads/Me at the zoo.f134.mp4
+KDPROGRESS downloading 1024 322379 NA 250610.76531683977 1 avc1.4D400C
+KDPROGRESS downloading 3072 322379 NA 532566.0034719352 0 avc1.4D400C
+KDPROGRESS downloading 7168 322379 NA 884492.1029684328 0 avc1.4D400C
+KDPROGRESS downloading 15360 322379 NA 1685843.5022896768 0 avc1.4D400C
+KDPROGRESS downloading 31744 322379 NA 2694731.4492501365 0 avc1.4D400C
+KDPROGRESS downloading 64512 322379 NA 2380948.916784724 0 avc1.4D400C
+KDPROGRESS downloading 130048 322379 NA 1384165.4484256683 0 avc1.4D400C
+KDPROGRESS downloading 261120 322379 NA 1498010.7896716518 0 avc1.4D400C
+KDPROGRESS downloading 322379 322379 NA 1668505.920189931 0 avc1.4D400C
+KDPROGRESS finished 322379 322379 NA 699147.8973508341 NA avc1.4D400C
+[download] Destination: /Users/someone/Downloads/Me at the zoo.f140.m4a
+KDPROGRESS downloading 1024 309288 NA NA NA none
+KDPROGRESS downloading 3072 309288 NA 1183838.835722161 0 none
+KDPROGRESS downloading 7168 309288 NA 1934172.0967575915 0 none
+KDPROGRESS downloading 15360 309288 NA 3271608.2388787325 0 none
+KDPROGRESS downloading 31744 309288 NA 4441093.601601067 0 none
+KDPROGRESS downloading 64512 309288 NA 7938009.788130372 0 none
+KDPROGRESS downloading 130048 309288 NA 14166710.297691088 0 none
+KDPROGRESS downloading 261120 309288 NA 8967042.69334687 0 none
+KDPROGRESS downloading 309288 309288 NA 8289070.967929917 0 none
+KDPROGRESS finished 309288 309288 NA 1729343.3557673977 NA none
+[Merger] Merging formats into "/Users/someone/Downloads/Me at the zoo.mp4"
+Deleting original file /Users/someone/Downloads/Me at the zoo.f140.m4a (pass -k to keep)
+Deleting original file /Users/someone/Downloads/Me at the zoo.f134.mp4 (pass -k to keep)
+KDFILE /Users/someone/Downloads/Me at the zoo.mp4

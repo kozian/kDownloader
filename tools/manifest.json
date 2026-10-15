@@ -1,0 +1,44 @@
+{
+  "tools": [
+    {
+      "name": "yt-dlp",
+      "version": "2026.08.19",
+      "url": "https://github.com/yt-dlp/yt-dlp/releases/download/2026.08.19/yt-dlp_macos.zip",
+      "sha256": "07e54b0865303c864006925913bce2604f8ee8cc6f18699bac9c309f9328a6d8",
+      "kind": "zip-directory",
+      "destination": "yt-dlp",
+      "executable": "yt-dlp/yt-dlp_macos",
+      "versionArgs": [
+        "--version"
+      ]
+    },
+    {
+      "name": "deno",
+      "version": "2.9.7",
+      "url": "https://github.com/denoland/deno/releases/download/v2.9.7/deno-aarch64-apple-darwin.zip",
+      "sha256": "5cd46d6268f6f78f5d88bdc7159d20bd44cdaa4b3303474839f87ec6fe7ae25c",
+      "kind": "zip-file",
+      "archivePath": "deno",
+      "destination": "deno",
+      "executable": "deno",
+      "versionArgs": [
+        "--version"
+      ]
+    },
+    {
+      "name": "ffmpeg",
+      "version": "9.0.2",
+      "url": "https://ffmpeg.org/releases/ffmpeg-9.0.2.tar.xz",
+      "sha256": "8c3850283eb25fa026482078a04051e0be17347b09ef81a0849bec15a96e002e",
+      "kind": "ffmpeg-source",
+      "products": [
+        "ffmpeg",
+        "ffprobe"
+      ],
+      "executable": "ffmpeg",
+      "versionArgs": [
+        "-version"
+      ]
+    }
+  ]
+}

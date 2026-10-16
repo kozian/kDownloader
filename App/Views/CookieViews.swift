@@ -84,6 +84,12 @@ struct SettingsView: View {
                     SettingNote("Used only when a video needs signing in, after a first attempt without cookies.")
                 }
             }
+            .padding(.bottom, 8)
+            if let updates = app.updates {
+                LabeledContent("yt-dlp:") {
+                    YtDlpSettings(app: app, updates: updates)
+                }
+            }
         }
         .padding(20)
         .frame(width: 500)
@@ -109,5 +115,73 @@ private struct SettingNote: View {
             .font(.caption)
             .foregroundStyle(.secondary)
             .fixedSize(horizontal: false, vertical: true)
+    }
+}
+
+/// The "yt-dlp" row of Settings: version, source, update actions.
+private struct YtDlpSettings: View {
+    let app: AppModel
+    let updates: UpdatesModel
+
+    var body: some View {
+        VStack(alignment: .leading, spacing: 6) {
+            if let active = app.activeYtDlp {
+                Text(active.source == .updated
+                     ? "\(active.version.description) (updated)"
+                     : "\(active.version.description) (bundled version)")
+            }
+            status
+            // Side by side when they fit; Russian labels are longer and stack.
+            ViewThatFits(in: .horizontal) {
+                HStack { buttons }
+                VStack(alignment: .leading) { buttons }
+            }
+            if updates.availableVersion != nil, !updates.canInstall, !updates.isInstalling {
+                SettingNote("Available after the current download.")
+            }
+        }
+    }
+
+    @ViewBuilder
+    private var buttons: some View {
+        if updates.availableVersion != nil {
+            Button("Install", action: updates.install)
+                .disabled(!updates.canInstall)
+        }
+        Button("Check for Updates", action: updates.checkNow)
+            .disabled(updates.isInstalling || updates.status == .checking)
+        if app.activeYtDlp?.source == .updated {
+            Button("Use Bundled Version", action: updates.useBundledVersion)
+                .disabled(updates.isInstalling || app.operationInProgress)
+        }
+    }
+
+    @ViewBuilder
+    private var status: some View {
+        switch updates.status {
+        case .checking:
+            HStack(spacing: 6) {
+                ProgressView().controlSize(.small)
+                Text("Checking…").foregroundStyle(.secondary)
+            }
+        case .installing(let progress):
+            ProgressView(value: progress) { Text("Updating yt-dlp…") }
+                .frame(maxWidth: 260)
+        case .failed(let error):
+            Text(error.message)
+                .foregroundStyle(.orange)
+                .fixedSize(horizontal: false, vertical: true)
+        case .upToDate where updates.availableVersion == nil:
+            Label("yt-dlp is up to date", systemImage: "checkmark.circle.fill")
+                .foregroundStyle(.green)
+        default:
+            if let version = updates.availableVersion {
+                Text("Version \(version.description) is available").foregroundStyle(.tint)
+            } else if let lastCheck = updates.lastCheck {
+                Text("Last checked \(lastCheck.formatted(.relative(presentation: .named)))")
+                    .font(.caption)
+                    .foregroundStyle(.secondary)
+            }
+        }
     }
 }

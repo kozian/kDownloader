@@ -38,15 +38,23 @@ private struct MainView: View {
             StatusArea(session: session, cookieBrowser: cookieBrowser)
 
             Divider()
-            FormatSelectionView(session: session)
-            Divider()
-
-            DestinationRow(session: session)
+            // One label column for every row, so the controls start at the same x.
+            Grid(alignment: .leading, horizontalSpacing: 10, verticalSpacing: 10) {
+                FormatSelectionView(session: session)
+                GridRow {
+                    // Unsized: a flexible divider would otherwise widen the label column.
+                    Divider().gridCellUnsizedAxes(.horizontal).gridCellColumns(2)
+                }
+                DestinationRow(session: session)
+            }
+            .frame(maxWidth: .infinity, alignment: .leading)
             HStack {
                 PlanSummary(plan: session.formatControlsEnabled ? session.currentPlan : nil)
                 Spacer()
                 Button("Download", action: session.download)
                     .keyboardShortcut(.defaultAction)
+                    .buttonStyle(.borderedProminent)
+                    .controlSize(.large)
                     .disabled(!session.canDownload)
             }
         }
@@ -102,6 +110,9 @@ private struct URLInputView: View {
                     .textFieldStyle(.roundedBorder)
                     .onSubmit { session.analyze() }
                     .disabled(!app.toolsReady || session.isBusy)
+                if let updates = app.updates {
+                    UpdateIcon(updates: updates)
+                }
                 if session.state == .analyzing {
                     Button("Cancel", action: session.cancelAnalysis)
                         .keyboardShortcut(.cancelAction)
@@ -124,22 +135,14 @@ struct DamagedAppBanner: View {
     let reason: String
 
     var body: some View {
-        HStack(alignment: .top, spacing: 12) {
-            Image(systemName: "exclamationmark.octagon.fill")
-                .font(.title)
-                .foregroundStyle(.red)
-            VStack(alignment: .leading, spacing: 4) {
-                Text("The app is damaged — please reinstall it")
-                    .font(.headline)
-                Text("Bundled tool “\(toolName)” is not working: \(reason)")
-                    .font(.callout)
-                    .foregroundStyle(.secondary)
-                    .textSelection(.enabled)
-            }
+        StatusCard(kind: .critical, systemImage: "exclamationmark.octagon.fill") {
+            Text("The app is damaged — please reinstall it")
+                .font(.headline)
+            Text("Bundled tool “\(toolName)” is not working: \(reason)")
+                .font(.callout)
+                .foregroundStyle(.secondary)
+                .textSelection(.enabled)
         }
-        .padding(12)
-        .frame(maxWidth: .infinity, alignment: .leading)
-        .background(.red.opacity(0.08), in: RoundedRectangle(cornerRadius: 8))
     }
 }
 

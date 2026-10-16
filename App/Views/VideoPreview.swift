@@ -13,10 +13,10 @@ struct VideoPreview: View {
                     image.resizable().aspectRatio(contentMode: .fill)
                 } else {
                     ZStack {
-                        Rectangle().fill(.quaternary)
-                        Image(systemName: "film")
-                            .font(.title)
-                            .foregroundStyle(.secondary)
+                        RoundedRectangle(cornerRadius: 6).fill(.quinary)
+                        Image(systemName: "play.rectangle")
+                            .font(.system(size: 30, weight: .light))
+                            .foregroundStyle(.tertiary)
                     }
                 }
             }

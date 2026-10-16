@@ -4,6 +4,8 @@
 // Usage: scripts/snapshot.swift <output-directory>
 //        scripts/snapshot.swift --menu <item title>
 //        scripts/snapshot.swift --session <command>   (type:<text>, analyze, cancel, retry, …)
+//        scripts/snapshot.swift --click <x,y>          (points from the main window's top-left)
+//        scripts/snapshot.swift --key escape|down|return
 import Foundation
 
 let arguments = Array(CommandLine.arguments.dropFirst())
@@ -12,8 +14,10 @@ switch arguments.count {
 case 1: (name, object) = ("com.kozian.kDownloader.debug.snapshot", arguments[0])
 case 2 where arguments[0] == "--menu": (name, object) = ("com.kozian.kDownloader.debug.menu", arguments[1])
 case 2 where arguments[0] == "--session": (name, object) = ("com.kozian.kDownloader.debug.session", arguments[1])
+case 2 where arguments[0] == "--click": (name, object) = ("com.kozian.kDownloader.debug.click", arguments[1])
+case 2 where arguments[0] == "--key": (name, object) = ("com.kozian.kDownloader.debug.key", arguments[1])
 default:
-    print("usage: snapshot.swift <output-directory> | --menu <item title> | --session <command>")
+    print("usage: snapshot.swift <output-directory> | --menu <item title> | --session <command> | --click <x,y> | --key <name>")
     exit(2)
 }
 DistributedNotificationCenter.default().postNotificationName(

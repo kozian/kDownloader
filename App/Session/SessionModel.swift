@@ -17,7 +17,9 @@ final class SessionModel {
         case downloadFailed(VideoInfo, AppError)
     }
 
-    private(set) var state: State = .idle
+    private(set) var state: State = .idle {
+        didSet { app.operationInProgress = isBusy }
+    }
     /// Shown below the URL field when the text is not a link.
     private(set) var validationError: ErrorCategory?
 

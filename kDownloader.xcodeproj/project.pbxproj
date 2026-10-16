@@ -11,6 +11,7 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		A10000000000000000000202 /* Version.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; name = Version.xcconfig; path = Config/Version.xcconfig; sourceTree = "<group>"; };
 		A10000000000000000000201 /* kDownloader.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = kDownloader.app; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
@@ -34,6 +35,7 @@
 			isa = PBXGroup;
 			children = (
 				A10000000000000000000401 /* App */,
+				A10000000000000000000202 /* Version.xcconfig */,
 				A10000000000000000000602 /* Products */,
 			);
 			sourceTree = "<group>";
@@ -131,6 +133,7 @@
 			);
 			inputPaths = (
 				"$(SRCROOT)/tools/manifest.json",
+				"$(SRCROOT)/tools/manifest-update-test.json",
 				"$(SRCROOT)/scripts/embed-tools.sh",
 				"$(SRCROOT)/scripts/fetch-tools.sh",
 				"$(SRCROOT)/scripts/build-ffmpeg.sh",
@@ -206,13 +209,15 @@
 		};
 		A10000000000000000000921 /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = A10000000000000000000202 /* Version.xcconfig */;
 			buildSettings = {
+				KD_TOOLS_DIR = "$(SRCROOT)/.build/tools-update-test";
+				KD_TOOLS_MANIFEST = "$(SRCROOT)/tools/manifest-update-test.json";
 				ARCHS = arm64;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_IDENTITY = "-";
 				CODE_SIGN_STYLE = Manual;
 				COMBINE_HIDPI_IMAGES = YES;
-				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = "";
 				ENABLE_APP_SANDBOX = NO;
 				ENABLE_HARDENED_RUNTIME = NO;
@@ -224,7 +229,6 @@
 					"$(inherited)",
 					"@executable_path/../Frameworks",
 				);
-				MARKETING_VERSION = 0.1.0;
 				PRODUCT_BUNDLE_IDENTIFIER = com.kozian.kDownloader;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_EMIT_LOC_STRINGS = YES;
@@ -234,13 +238,13 @@
 		};
 		A10000000000000000000922 /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = A10000000000000000000202 /* Version.xcconfig */;
 			buildSettings = {
 				ARCHS = arm64;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_IDENTITY = "-";
 				CODE_SIGN_STYLE = Manual;
 				COMBINE_HIDPI_IMAGES = YES;
-				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = "";
 				ENABLE_APP_SANDBOX = NO;
 				ENABLE_HARDENED_RUNTIME = NO;
@@ -252,7 +256,6 @@
 					"$(inherited)",
 					"@executable_path/../Frameworks",
 				);
-				MARKETING_VERSION = 0.1.0;
 				PRODUCT_BUNDLE_IDENTIFIER = com.kozian.kDownloader;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_EMIT_LOC_STRINGS = YES;

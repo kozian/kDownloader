@@ -5,6 +5,8 @@ struct KDownloaderApp: App {
     @State private var model = AppModel()
 
     init() {
+        // Tooltips (the compatibility warnings) appear almost at once instead of after the system delay.
+        UserDefaults.standard.register(defaults: ["NSInitialToolTipDelay": 100])
         #if DEBUG
         WindowSnapshot.install()
         #endif

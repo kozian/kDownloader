@@ -15,14 +15,9 @@ struct ErrorView: View {
     }
 
     var body: some View {
-        VStack(alignment: .leading, spacing: 10) {
-            Label {
-                Text(isSafariCookieAccess ? "Cannot access Safari cookies" : error.category.title)
-                    .font(.headline)
-            } icon: {
-                Image(systemName: "exclamationmark.triangle.fill")
-                    .foregroundStyle(.orange)
-            }
+        StatusCard(kind: .warning, systemImage: "exclamationmark.triangle.fill") {
+            Text(isSafariCookieAccess ? "Cannot access Safari cookies" : error.category.title)
+                .font(.headline)
             Text(isSafariCookieAccess
                  ? "Give kDownloader Full Disk Access in System Settings → Privacy & Security, then try again."
                  : error.category.explanation)
@@ -52,11 +47,8 @@ struct ErrorView: View {
                 Button("Open Log") { openLog() }
                     .buttonStyle(.link)
             }
-            .padding(.top, 4)
+            .padding(.top, 2)
         }
-        .padding(14)
-        .frame(maxWidth: .infinity, alignment: .leading)
-        .background(.orange.opacity(0.08), in: RoundedRectangle(cornerRadius: 8))
     }
 }
 

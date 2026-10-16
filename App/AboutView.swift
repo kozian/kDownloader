@@ -21,6 +21,11 @@ struct AboutView: View {
                         Text(version(of: tool))
                             .foregroundStyle(.secondary)
                             .textSelection(.enabled)
+                        if tool == .ytDlp, model.activeYtDlp?.source == .updated {
+                            Text("updated")
+                                .font(.caption)
+                                .foregroundStyle(.secondary)
+                        }
                     }
                 }
             }

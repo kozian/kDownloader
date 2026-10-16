@@ -38,15 +38,6 @@ extension MediaFormat {
     }
 }
 
-extension FormatBadge {
-    var text: LocalizedStringKey {
-        switch self {
-        case .mayNotOpenInQuickTime: "May not open in QuickTime"
-        case .hardwareDecodingM3: "Hardware decoding only on M3 and later"
-        }
-    }
-}
-
 extension DownloadPlan {
     var fileExtension: String { container.rawValue }
 }

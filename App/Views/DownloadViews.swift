@@ -3,13 +3,15 @@ import KDownloaderCore
 import SwiftUI
 
 /// "Save to: Downloads [Change…]" with a notice when the saved folder is gone.
+/// "Save to: [folder] Change…" as a row of the main window's grid.
 struct DestinationRow: View {
     @Bindable var session: SessionModel
 
     var body: some View {
-        VStack(alignment: .leading, spacing: 4) {
+        GridRow {
+            Text("Save to:")
+                .gridColumnAlignment(.trailing)
             HStack(spacing: 6) {
-                Text("Save to:")
                 Image(nsImage: NSWorkspace.shared.icon(forFile: session.destination.path))
                     .resizable()
                     .frame(width: 16, height: 16)
@@ -21,7 +23,12 @@ struct DestinationRow: View {
                     .controlSize(.small)
                     .disabled(isDownloading)
             }
-            if session.savedDestinationMissing {
+            // The control column takes the rest of the width; the label column stays as wide as its labels.
+            .frame(maxWidth: .infinity, alignment: .leading)
+        }
+        if session.savedDestinationMissing {
+            GridRow {
+                Color.clear.gridCellUnsizedAxes([.horizontal, .vertical])
                 Label("The previously selected folder is not available, so Downloads is used.", systemImage: "info.circle")
                     .font(.callout)
                     .foregroundStyle(.secondary)
@@ -53,7 +60,7 @@ struct DownloadProgressView: View {
     let cancel: () -> Void
 
     var body: some View {
-        VStack(alignment: .leading, spacing: 8) {
+        StatusCard(kind: .info, systemImage: "arrow.down.circle.fill") {
             Text(stageTitle)
                 .font(.headline)
             HStack {
@@ -115,14 +122,9 @@ struct DownloadFinishedView: View {
     let startNew: () -> Void
 
     var body: some View {
-        VStack(alignment: .leading, spacing: 10) {
-            Label {
-                Text("Download complete")
-                    .font(.headline)
-            } icon: {
-                Image(systemName: "checkmark.circle.fill")
-                    .foregroundStyle(.green)
-            }
+        StatusCard(kind: .success, systemImage: "checkmark.circle.fill") {
+            Text("Download complete")
+                .font(.headline)
             Text(file.lastPathComponent)
                 .foregroundStyle(.secondary)
                 .textSelection(.enabled)
@@ -131,8 +133,5 @@ struct DownloadFinishedView: View {
                 Button("New Download", action: startNew)
             }
         }
-        .padding(14)
-        .frame(maxWidth: .infinity, alignment: .leading)
-        .background(.green.opacity(0.08), in: RoundedRectangle(cornerRadius: 8))
     }
 }

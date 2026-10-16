@@ -10,6 +10,8 @@ import AppKit
 enum WindowSnapshot {
     static let snapshotNotification = Notification.Name("com.kozian.kDownloader.debug.snapshot")
     static let menuNotification = Notification.Name("com.kozian.kDownloader.debug.menu")
+    static let clickNotification = Notification.Name("com.kozian.kDownloader.debug.click")
+    static let keyNotification = Notification.Name("com.kozian.kDownloader.debug.key")
 
     @MainActor
     static func install() {
@@ -18,12 +20,50 @@ enum WindowSnapshot {
             guard let directory = note.object as? String else { return }
             MainActor.assumeIsolated { capture(into: URL(filePath: directory)) }
         }
+        // "x,y" in points from the top-left corner of the main window: a click there.
+        center.addObserver(forName: clickNotification, object: nil, queue: .main) { note in
+            guard let text = note.object as? String else { return }
+            MainActor.assumeIsolated { click(text) }
+        }
+        center.addObserver(forName: keyNotification, object: nil, queue: .main) { note in
+            guard let key = note.object as? String else { return }
+            MainActor.assumeIsolated { press(key) }
+        }
         center.addObserver(forName: menuNotification, object: nil, queue: .main) { note in
             guard let title = note.object as? String else { return }
             MainActor.assumeIsolated {
                 if let mainMenu = NSApp.mainMenu {
                     perform(title, in: mainMenu)
                 }
+            }
+        }
+    }
+
+    @MainActor
+    private static func click(_ text: String) {
+        let numbers = text.replacingOccurrences(of: "move:", with: "").split(separator: ",").compactMap { Double($0) }
+        guard numbers.count == 2,
+              let window = NSApp.windows.first(where: { $0.isVisible && $0.title == "kDownloader" }),
+              let content = window.contentView else { return }
+        let point = NSPoint(x: numbers[0], y: content.bounds.height - numbers[1])
+        let types: [NSEvent.EventType] = text.hasPrefix("move") ? [.mouseMoved] : [.leftMouseDown, .leftMouseUp]
+        for type in types {
+            if let event = NSEvent.mouseEvent(with: type, location: point, modifierFlags: [], timestamp: ProcessInfo.processInfo.systemUptime,
+                                              windowNumber: window.windowNumber, context: nil, eventNumber: 0, clickCount: 1, pressure: 1) {
+                NSApp.postEvent(event, atStart: false)
+            }
+        }
+    }
+
+    @MainActor
+    private static func press(_ key: String) {
+        let codes: [String: (UInt16, String)] = ["escape": (53, "\u{1b}"), "down": (125, ""), "return": (36, "\r")]
+        guard let (code, characters) = codes[key], let window = NSApp.keyWindow ?? NSApp.windows.first(where: \.isVisible) else { return }
+        for type in [NSEvent.EventType.keyDown, .keyUp] {
+            if let event = NSEvent.keyEvent(with: type, location: .zero, modifierFlags: [], timestamp: ProcessInfo.processInfo.systemUptime,
+                                            windowNumber: window.windowNumber, context: nil, characters: characters,
+                                            charactersIgnoringModifiers: characters, isARepeat: false, keyCode: code) {
+                NSApp.postEvent(event, atStart: false)
             }
         }
     }
@@ -76,6 +116,14 @@ enum WindowSnapshot {
             if !menus.isEmpty {
                 try? menus.joined(separator: "\n").write(to: directory.appending(path: "\(name)-menus.txt"), atomically: true, encoding: .utf8)
             }
+            var classes: [String: Int] = [:]
+            func collect(_ view: NSView) {
+                classes[String(describing: type(of: view)), default: 0] += 1
+                view.subviews.forEach(collect)
+            }
+            collect(view)
+            try? classes.sorted { $0.key < $1.key }.map { "\($0.value)\t\($0.key)" }.joined(separator: "\n")
+                .write(to: directory.appending(path: "\(name)-views.txt"), atomically: true, encoding: .utf8)
             if !scrollInfo.isEmpty {
                 try? scrollInfo.joined(separator: "\n").write(to: directory.appending(path: "\(name)-scroll.txt"), atomically: true, encoding: .utf8)
             }

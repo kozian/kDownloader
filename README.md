@@ -26,6 +26,9 @@ Requirements: Xcode 27 (command line tools included), `jq` (ships with macOS).
 # Run the core tests
 swift test --package-path Packages/KDownloaderCore
 
+# Also install the real latest yt-dlp release into a temporary folder
+KD_NETWORK_TESTS=1 swift test --package-path Packages/KDownloaderCore --filter LiveUpdateTests
+
 # Build the app; the "Embed Tools" build phase downloads, verifies and
 # prepares the tools on first build (ffmpeg is compiled from source, ~1 min)
 xcodebuild -project kDownloader.xcodeproj -scheme kDownloader build
@@ -56,6 +59,57 @@ swiftc -o .build/snapshot scripts/snapshot.swift
 See `App/Debug/` for the full list of commands. None of this is compiled into
 Release builds.
 
+## App icon
+
+The icon is generated from `Design/AppleIcon.png` (a TV body with a dark rounded
+frame on a plain background):
+
+```sh
+swift scripts/make-icon.swift            # options: --source <png> --threshold 0.68
+```
+
+The script cuts the body out along the traced edge of its frame, places it on
+Apple's macOS icon grid (824 px body on a 1024 px canvas, soft shadow) and writes
+all 10 sizes plus `Contents.json` to `App/Assets.xcassets/AppIcon.appiconset/`.
+The output is deterministic and committed, so builds do not run the script. If a
+rebuilt Debug app still shows the old icon, refresh the LaunchServices cache:
+
+```sh
+/System/Library/Frameworks/CoreServices.framework/Frameworks/LaunchServices.framework/Support/lsregister -f <path to kDownloader.app>
+```
+
+## Localization
+
+Command-line builds do not add new keys to `App/Localizable.xcstrings`. After a
+build, check the catalog against the strings the compiler extracted:
+
+```sh
+python3 scripts/check-localization.py
+```
+
+It lists missing keys, missing Russian translations, unused entries and Russian
+wording the glossary rules out ("площадка", "Загрузить", …).
+
+## Testing yt-dlp updates
+
+Debug builds bundle the yt-dlp release before the one in `tools/manifest.json`
+(`tools/manifest-update-test.json`, kept one release behind by
+`scripts/update-tools.sh`), so every Debug build offers the real latest release
+as an update. Release builds and `release.sh --dry-run` bundle the latest one.
+
+To test without touching the regular app's settings and installed updates, build
+the separate update test app:
+
+```sh
+scripts/build-update-test.sh     # prints the path of the test app
+```
+
+The test app has its own bundle identifier (`com.kozian.kDownloader.updatetest`),
+settings, installed updates (`~/Library/Application Support/kDownloader-updatetest`)
+and logs (`~/Library/Logs/kDownloader-updatetest`), so it never touches the
+regular app. Open it, install the offered update, relaunch to see it used, and
+press "Use Bundled Version" in Settings to go back.
+
 ## Updating the bundled tools
 
 ```sh
@@ -63,7 +117,8 @@ scripts/update-tools.sh
 ```
 
 The script updates `tools/manifest.json` to the latest stable yt-dlp, Deno and
-ffmpeg and prints which versions changed. yt-dlp and Deno are checked against
+ffmpeg, sets `tools/manifest-update-test.json` (Debug builds) to the yt-dlp
+release before the latest, and prints which versions changed. yt-dlp and Deno are checked against
 the checksums published with their releases. For ffmpeg, the `.asc` signature
 is verified only when `gpg` is installed and the FFmpeg release key
 (`FCF986EA15E6E293A5644F10B4322F04D67658D8`) is imported; otherwise the script
@@ -71,15 +126,25 @@ prints a warning. Commit the updated manifest and make a new release.
 
 ## Releasing
 
-Bump `MARKETING_VERSION` in the project, then:
+The version under development lives in `Config/Version.xcconfig`. Release it with:
 
 ```sh
-scripts/release.sh
+scripts/release.sh                 # or: scripts/release.sh --next 0.2.1
 ```
 
-It builds the Release configuration for arm64, checks that every bundled tool
-is arm64 and reports its version, signs the app ad hoc, verifies the signature
-and writes `dist/kDownloader-<version>.zip`.
+The script refuses uncommitted changes, an existing tag `v<version>` and an
+existing `dist/kDownloader-<version>.zip`. It builds the Release configuration
+for arm64, checks that every bundled tool is arm64 and reports its version, signs
+the app ad hoc and verifies the signature, commits "Release <version>" with the
+build number (git commit count of that commit), tags it, writes
+`dist/kDownloader-<version>.zip` with its `.sha256`, and then raises the version
+to the next minor (or `--next`) in a "Start <next> development" commit.
+
+For a verification build that changes nothing, use:
+
+```sh
+scripts/release.sh --dry-run       # writes dist/kDownloader-<version>-dryrun.zip
+```
 
 ## Installing (friends and family)
 

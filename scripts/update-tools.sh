@@ -6,18 +6,24 @@
 # GitHub release. ffmpeg: the newest release tarball from ffmpeg.org; its
 # .asc signature is verified when gpg is installed, and its SHA-256 is pinned.
 #
-# Usage: update-tools.sh [--manifest <path>]
+# Afterwards the Debug manifest (tools/manifest-update-test.json) is rewritten:
+# the same tools, but yt-dlp one release behind, so Debug builds can test the
+# in-app update against the real latest release.
+#
+# Usage: update-tools.sh [--manifest <path>] [--debug-manifest <path>]
 # Set GITHUB_TOKEN to avoid GitHub API rate limits.
 set -euo pipefail
 
 ROOT="$(cd "$(dirname "$0")/.." && pwd)"
 MANIFEST="$ROOT/tools/manifest.json"
+DEBUG_MANIFEST="$ROOT/tools/manifest-update-test.json"
 CACHE="$ROOT/.build/tools-cache"
 FFMPEG_SIGNING_KEY="FCF986EA15E6E293A5644F10B4322F04D67658D8"
 
 while [[ $# -gt 0 ]]; do
     case "$1" in
         --manifest) MANIFEST="$2"; shift 2 ;;
+        --debug-manifest) DEBUG_MANIFEST="$2"; shift 2 ;;
         *) echo "unknown argument: $1" >&2; exit 2 ;;
     esac
 done
@@ -102,3 +108,21 @@ else
 fi
 set_tool ffmpeg "$version" "$url" "$(shasum -a 256 "$tarball" | awk '{print $1}')"
 report ffmpeg "$old" "$version"
+
+# Debug manifest: yt-dlp one release behind the release manifest.
+current="$(current yt-dlp)"
+auth=()
+[[ -n "${GITHUB_TOKEN:-}" ]] && auth=(-H "Authorization: Bearer $GITHUB_TOKEN")
+previous="$(curl -fsSL ${auth[@]+"${auth[@]}"} "https://api.github.com/repos/yt-dlp/yt-dlp/releases?per_page=30" \
+    | jq -r --arg current "$current" '[.[] | select(.prerelease | not) | .tag_name] | map(select(. < $current)) | max // empty')"
+[[ -n "$previous" ]] || { echo "error: no yt-dlp release older than $current" >&2; exit 1; }
+base="https://github.com/yt-dlp/yt-dlp/releases/download/$previous"
+sha="$(curl -fsSL "$base/SHA2-256SUMS" | checksum_for yt-dlp_macos.zip)"
+[[ "$sha" =~ ^[0-9a-f]{64}$ ]] || { echo "error: no checksum for yt-dlp $previous" >&2; exit 1; }
+old_debug="$(jq -r '.tools[] | select(.name == "yt-dlp") | .version' "$DEBUG_MANIFEST" 2>/dev/null || echo none)"
+jq --arg v "$previous" --arg u "$base/yt-dlp_macos.zip" --arg s "$sha" \
+    '(.tools[] | select(.name == "yt-dlp")) |= (.version = $v | .url = $u | .sha256 = $s)' \
+    "$MANIFEST" > "$DEBUG_MANIFEST.tmp"
+mv "$DEBUG_MANIFEST.tmp" "$DEBUG_MANIFEST"
+report "yt-dlp (Debug builds)" "$old_debug" "$previous"
+

@@ -6,7 +6,7 @@ import KDownloaderCore
 /// window, e.g. `type:https://…`, `analyze`, `cancel`, `retry`,
 /// `video:best|none|<height>|f:<format id>`, `audio:<id>|none`, `all:on|off`,
 /// `folder:<path>`, `download`, `cancelDownload`, `newDownload`, `showInFinder`,
-/// `browser:<id>|none` (answers the browser dialog).
+/// `browser:<id>|none` (answers the browser dialog), `update:check|install|bundled`.
 extension SessionModel {
     static let debugNotification = Notification.Name("com.kozian.kDownloader.debug.session")
 
@@ -34,6 +34,13 @@ extension SessionModel {
                 }
             case "audio": audioChoice = value == "none" ? .none : .track(value)
             case "all": app.showAllFormats = value == "on"
+            case "update":
+                switch value {
+                case "check": app.updates?.checkNow()
+                case "install": app.updates?.install()
+                case "bundled": app.updates?.useBundledVersion()
+                default: break
+                }
             case "folder": setDestination(URL(filePath: value, directoryHint: .isDirectory))
             case "browser": answerBrowserRequest(CookieBrowser.named(value).map(CookieBrowserChoice.browser) ?? .declined)
             default: break

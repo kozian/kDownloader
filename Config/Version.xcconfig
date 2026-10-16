@@ -1,5 +1,5 @@
 // The app's version, maintained by scripts/release.sh.
 // MARKETING_VERSION: the version under development; release.sh releases it and then raises it.
 // CURRENT_PROJECT_VERSION: build number = git commit count of the last release commit.
-MARKETING_VERSION = 0.2.0
+MARKETING_VERSION = 0.3.0
 CURRENT_PROJECT_VERSION = 3

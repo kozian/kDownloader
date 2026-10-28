@@ -13,6 +13,7 @@ see [README.md](README.md).
 | `scripts/` | Tool fetching, ffmpeg build, tool updates, release packaging |
 | `Config/Version.xcconfig` | The version under development |
 | `Design/AppIcon.png` | Source picture of the app icon |
+| `docs/` | Pictures for the README |
 | `openspec/` | Specifications (`specs/`) and change proposals (`changes/`) |
 | `.claude/skills/` | Workflows for Claude Code: OpenSpec and `release-update` |
 | `BACKLOG.md` | Tasks and ideas not yet taken into a change |

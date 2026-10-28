@@ -1,198 +1,180 @@
 # kDownloader
 
-A simple macOS app for downloading videos from sites supported by
-[yt-dlp](https://github.com/yt-dlp/yt-dlp). Paste a link, pick a preset and a
-folder, get a file that plays in QuickTime.
+A simple macOS app for downloading videos from YouTube and the
+[other sites supported by yt-dlp](https://github.com/yt-dlp/yt-dlp/blob/master/supportedsites.md).
+Paste a link, check the format, press Download, and get a file that plays in
+QuickTime.
 
 - macOS 14 or later, Apple Silicon only.
-- yt-dlp, ffmpeg/ffprobe and Deno are bundled inside the app; nothing from
-  Homebrew or `PATH` is used.
+- English and Russian.
+- Everything it needs is inside the app: yt-dlp, FFmpeg and Deno are bundled,
+  nothing has to be installed with Homebrew.
 
-## Repository layout
+Building the app or working on its code: see [DEVELOPMENT.md](DEVELOPMENT.md).
 
-| Path | Contents |
-|---|---|
-| `App/` | SwiftUI app target (synchronized folder in `kDownloader.xcodeproj`) |
-| `Packages/KDownloaderCore/` | UI-independent logic and its tests |
-| `tools/manifest.json` | Pinned versions, URLs and SHA-256 of the bundled tools |
-| `scripts/` | Tool fetching, ffmpeg build, tool updates, release packaging |
-| `openspec/` | Specifications and change proposals |
+## Installing
 
-## Building
-
-Requirements: Xcode 27 (command line tools included), `jq` (ships with macOS).
-
-```sh
-# Run the core tests
-swift test --package-path Packages/KDownloaderCore
-
-# Also install the real latest yt-dlp release into a temporary folder
-KD_NETWORK_TESTS=1 swift test --package-path Packages/KDownloaderCore --filter LiveUpdateTests
-
-# Build the app; the "Embed Tools" build phase downloads, verifies and
-# prepares the tools on first build (ffmpeg is compiled from source, ~1 min)
-xcodebuild -project kDownloader.xcodeproj -scheme kDownloader build
-```
-
-The tools can also be prepared without Xcode:
-
-```sh
-scripts/fetch-tools.sh
-```
-
-Downloads are cached in `.build/tools-cache`, prepared tools in `.build/tools`.
-A checksum mismatch stops the build and names the tool.
-
-### Checking the UI from the command line (Debug builds)
-
-Debug builds listen for a few distributed notifications, so UI flows can be
-checked without Screen Recording or Accessibility permissions:
-
-```sh
-swiftc -o .build/snapshot scripts/snapshot.swift
-.build/snapshot --session "type:https://www.youtube.com/watch?v=jNQXAC9IVRw"
-.build/snapshot --session analyze
-.build/snapshot --menu "Log"
-.build/snapshot /tmp/shots        # renders every window to /tmp/shots/<title>.png
-```
-
-See `App/Debug/` for the full list of commands. None of this is compiled into
-Release builds.
-
-## App icon
-
-The icon is generated from `Design/AppIcon.png` (a TV body with a dark rounded
-frame on a plain background):
-
-```sh
-swift scripts/make-icon.swift            # options: --source <png> --threshold 0.68
-```
-
-The script cuts the body out along the traced edge of its frame, places it on
-Apple's macOS icon grid (824 px body on a 1024 px canvas, soft shadow) and writes
-all 10 sizes plus `Contents.json` to `App/Assets.xcassets/AppIcon.appiconset/`.
-The output is deterministic and committed, so builds do not run the script. If a
-rebuilt Debug app still shows the old icon, refresh the LaunchServices cache:
-
-```sh
-/System/Library/Frameworks/CoreServices.framework/Frameworks/LaunchServices.framework/Support/lsregister -f <path to kDownloader.app>
-```
-
-## Localization
-
-Command-line builds do not add new keys to `App/Localizable.xcstrings`. After a
-build, check the catalog against the strings the compiler extracted:
-
-```sh
-python3 scripts/check-localization.py
-```
-
-It lists missing keys, missing Russian translations, unused entries and Russian
-wording the glossary rules out ("площадка", "Загрузить", …).
-
-## Testing yt-dlp updates
-
-Debug builds bundle the yt-dlp release before the one in `tools/manifest.json`
-(`tools/manifest-update-test.json`, kept one release behind by
-`scripts/update-tools.sh`), so every Debug build offers the real latest release
-as an update. Release builds and `release.sh --dry-run` bundle the latest one.
-
-To test without touching the regular app's settings and installed updates, build
-the separate update test app:
-
-```sh
-scripts/build-update-test.sh     # prints the path of the test app
-```
-
-The test app has its own bundle identifier (`com.kozian.kDownloader.updatetest`),
-settings, installed updates (`~/Library/Application Support/kDownloader-updatetest`)
-and logs (`~/Library/Logs/kDownloader-updatetest`), so it never touches the
-regular app. Open it, install the offered update, relaunch to see it used, and
-press "Use Bundled Version" in Settings to go back.
-
-## Updating the bundled tools
-
-```sh
-scripts/update-tools.sh
-```
-
-The script updates `tools/manifest.json` to the latest stable yt-dlp, Deno and
-ffmpeg, sets `tools/manifest-update-test.json` (Debug builds) to the yt-dlp
-release before the latest, and prints which versions changed. yt-dlp and Deno are checked against
-the checksums published with their releases. For ffmpeg, the `.asc` signature
-is verified only when `gpg` is installed and the FFmpeg release key
-(`FCF986EA15E6E293A5644F10B4322F04D67658D8`) is imported; otherwise the script
-prints a warning. The license files of yt-dlp and Deno are repinned to the new
-release tags (see [Licenses](#licenses)). Commit the updated manifests and make
-a new release.
-
-## Releasing
-
-The version under development lives in `Config/Version.xcconfig`. Release it with:
-
-```sh
-scripts/release.sh                 # or: scripts/release.sh --next 0.2.1
-```
-
-The script refuses uncommitted changes, an existing tag `v<version>` and an
-existing `dist/kDownloader-<version>.zip`. It builds the Release configuration
-for arm64, checks that every bundled tool is arm64 and reports its version, signs
-the app ad hoc and verifies the signature, commits "Release <version>" with the
-build number (git commit count of that commit), tags it, writes
-`dist/kDownloader-<version>.zip` with its `.sha256`, and then raises the version
-to the next minor (or `--next`) in a "Start <next> development" commit. Releases
-and dry runs both check that every license file is in the app (see
-[Licenses](#licenses)). A release also writes the source of the bundled FFmpeg,
-`dist/ffmpeg-<ffmpeg version>.tar.xz` with its `.sha256`
-(`scripts/publish-ffmpeg-source.sh`); a tarball already there for that version is
-kept.
-
-For a verification build that changes nothing, use:
-
-```sh
-scripts/release.sh --dry-run       # writes dist/kDownloader-<version>-dryrun.zip
-```
-
-## Installing (friends and family)
-
-The app is signed ad hoc, not notarized, so Gatekeeper blocks the first launch.
-
-Hand out `kDownloader-<version>.zip` together with the FFmpeg source tarball from
-`dist/` (`ffmpeg-<ffmpeg version>.tar.xz`), or a link to a folder with both: the
-LGPL requires the FFmpeg source to be available to everyone who gets the app.
-
-1. Unzip `kDownloader-<version>.zip` and move `kDownloader.app` to
-   `/Applications`.
-2. Remove the quarantine flag:
+1. Download `kDownloader-<version>.zip` from the
+   [latest release](https://github.com/kozian/kDownloader/releases/latest).
+2. Unzip it and move `kDownloader.app` to `/Applications`.
+3. The app is not notarized by Apple, so macOS blocks its first launch. Remove the
+   quarantine flag in Terminal:
 
    ```sh
    xattr -dr com.apple.quarantine /Applications/kDownloader.app
    ```
 
-   Alternatively, try to open the app once, then click **Open Anyway** in
+   Or try to open the app once, then click **Open Anyway** in
    **System Settings → Privacy & Security**.
 
-To use cookies from Safari (for age-restricted or sign-in-only videos), grant
-the app **Full Disk Access** in **System Settings → Privacy & Security**.
+To update the app, replace it with the new version the same way.
 
-## Licenses
+## Downloading a video
 
-kDownloader's own code is released under the [MIT license](LICENSE).
+1. **Paste a link** into the field at the top. A valid link starts the analysis
+   at once; if you type the link instead, press Return or **Analyze**.
+2. **Check the preview**: thumbnail, title, channel and duration.
+3. **Choose the format** in the **Video** and **Audio** menus, or keep the
+   defaults: the best quality that plays on any Mac, with the video's original
+   audio track.
+4. **Check the destination**: the folder (Downloads by default; click it to
+   choose another one, it is remembered), the file type and the estimated size.
+5. Press **Download**. The window shows the stage (video, audio, processing),
+   progress, speed and remaining time. **Cancel** stops the download and returns
+   to the format choice.
+6. When it finishes, **Show in Finder** reveals the file. A notification is shown
+   too; clicking it also opens Finder.
 
-The distributed app also contains third-party tools, each under its own license.
-Their license texts are in the app at
-`kDownloader.app/Contents/Resources/Licenses/`, one folder per component; the
-About window's "Show Licenses in Finder" opens that folder.
+The file is named after the video title. An existing file is never overwritten:
+a new one gets ` (2)`, ` (3)` and so on.
+
+Only single videos are supported. A link to a video inside a playlist downloads
+just that video; links to whole playlists, channels and live streams are not
+supported.
+
+## Choosing a format
+
+### Video menu
+
+- **Best compatible (1080p)** is the default: the highest resolution that plays
+  everywhere on a Mac.
+- Below it, every resolution of the same compatible format, with its codec and
+  estimated size, for example "720p · H.264 · mp4 · 82 MB". Lower resolutions
+  give smaller files.
+- **No video (audio only)**, the last item, saves only the sound as an `.m4a`
+  file (AAC), which plays in Music, QuickTime and on any Apple device.
+
+### Audio menu
+
+One entry per language. The track the video was recorded in is marked
+**Original (English)**, or just **Original** when the site does not say its
+language, and is selected by default. Dubbed tracks are listed by their
+language.
+
+### Why the formats differ
+
+Sites store the same video in several codecs. Which one you get decides where
+the file plays:
+
+| Video | Audio | Saved as | Plays on a Mac |
+|---|---|---|---|
+| H.264 or HEVC | AAC | `.mp4` | Everywhere: QuickTime, Finder preview, Photos, iPhone and iPad. **Best compatibility.** |
+| AV1 | AAC | `.mp4` | In QuickTime only on a Mac with M3 or later, which decodes AV1 in hardware. |
+| VP9, or any video with Opus audio | | `.mkv` | Needs a third-party player such as [IINA](https://iina.io) or [VLC](https://www.videolan.org/vlc/). QuickTime does not open MKV. |
+
+By default kDownloader offers only the first row, so whatever you download just
+works. The video is never re-encoded, so there is no quality loss.
+
+Sites often keep their highest resolutions only in VP9 or AV1. On YouTube, for
+example, 4K is usually available only that way, so **Best compatible** may top
+out at 1080p or 1440p while the video exists in 4K.
+
+### Show all formats
+
+To get every format the site offers, turn on **Show all formats** in
+**kDownloader → Settings…** (⌘,).
+
+- The **Video** menu groups the formats by codec and file type, for example
+  "H.264 · MP4", "VP9 · MKV", "AV1 · MP4", with one entry per resolution and its
+  estimated size. The best-compatibility group comes first. The headers of the
+  other groups say what playback needs: "⚠︎ needs a third-party player" or
+  "⚠︎ needs a Mac with M3 or later".
+- The **Audio** menu lists every audio track by codec, with bitrate and size, and
+  also offers **No audio**. If the chosen video already contains sound, the
+  Audio menu is turned off and that sound is used.
+- When a choice lowers compatibility, an orange ⚠ icon appears next to that
+  menu; hover over it to see why.
+
+Some videos have no compatible format at all. kDownloader then says so under the
+menus, and **Show all formats** is the way to download them.
+
+## Videos that need signing in
+
+Age-restricted, private and members-only videos need you to be signed in to the
+site. kDownloader always tries without your account first. If the site refuses,
+it retries once with the cookies of a browser where you are signed in.
+
+- The first time, it asks which browser to use. Choose one, or **Don't Use**.
+  You can change the choice later in **Settings → Cookies from browser**.
+- Supported: Safari, Google Chrome, Firefox, Brave, Microsoft Edge, Chromium,
+  Opera and Vivaldi.
+- **Safari** keeps its cookies in a protected place: give kDownloader **Full Disk
+  Access** in **System Settings → Privacy & Security → Full Disk Access**. The
+  error message has a button that opens that page.
+- Cookies are read only while the video is being analyzed or downloaded. They
+  are never stored, copied or written to the log.
+
+## Updating yt-dlp
+
+Sites change often, and yt-dlp, the tool that does the downloading, is updated
+just as often. When a site stops working, a newer yt-dlp usually fixes it.
+
+- Once a day kDownloader checks quietly whether a new yt-dlp is out. It never
+  installs anything by itself.
+- When one is available, an update icon appears next to the **Analyze** button.
+  Hover over it to see the version; click it to open Settings.
+- In **Settings → yt-dlp**, press **Install**. The update is downloaded, checked
+  against the checksums published by yt-dlp, tested, and used right away.
+  **Check for Updates** checks immediately.
+- If a new version causes problems, **Use Bundled Version** goes back to the
+  yt-dlp that came with the app.
+
+FFmpeg and Deno are updated with new versions of kDownloader itself.
+
+## When something goes wrong
+
+Every error is shown with a short explanation and what to do, for example "Site
+not supported", "Video unavailable or removed", "Not available in your region",
+"No network connection" or "Not enough disk space". **Details** shows the
+original message of yt-dlp, and **Retry** tries again.
+
+- **The log** (**Window → Log**, or **Open Log** on an error) shows what the app
+  did and what the tools answered. **Export…** saves it as a text file to send
+  to whoever helps you. Logs of the last 10 launches are kept in
+  `~/Library/Logs/kDownloader/`.
+- **Partial files.** After a cancelled or failed download, unfinished files
+  (`.part` and separate video and audio files) stay in the destination folder;
+  kDownloader does not delete them. You can remove them by hand.
+- **"The app is damaged — please reinstall it"** means a bundled tool is missing
+  or does not run. Download the app again.
+
+## About and licenses
+
+**kDownloader → About kDownloader** shows the app version and the versions of
+the bundled tools, and marks yt-dlp "updated" when an installed update is in use.
+
+kDownloader's own code is released under the [MIT license](LICENSE). The app
+bundles third-party tools under their own licenses:
 
 | Component | License | Notes |
 |---|---|---|
-| [yt-dlp](https://github.com/yt-dlp/yt-dlp) | Unlicense | The PyInstaller build bundles Python, OpenSSL, mutagen (GPL-2.0+) and other components; their licenses and the maintainers' offer of their source are in its `THIRD_PARTY_LICENSES.txt`. |
-| [FFmpeg](https://ffmpeg.org) (ffmpeg, ffprobe) | LGPL-2.1+ | Built from the official source tarball without GPL or non-free parts. The configure options and build script are in the app; the source tarball is published next to each release as `ffmpeg-<version>.tar.xz`. |
+| [yt-dlp](https://github.com/yt-dlp/yt-dlp) | Unlicense | Its build includes Python, OpenSSL, mutagen (GPL-2.0+) and other components; their licenses and the maintainers' offer of their source are in its `THIRD_PARTY_LICENSES.txt`. |
+| [FFmpeg](https://ffmpeg.org) (ffmpeg, ffprobe) | LGPL-2.1+ | Built from the official source without GPL or non-free parts. The source is attached to every release as `ffmpeg-<version>.tar.xz`. |
 | [Deno](https://deno.com) | MIT | Deno embeds V8 (BSD-3-Clause) and Rust crates (mostly MIT / Apache-2.0); Deno does not publish their notices together, so only Deno's own license is included. |
 
-kDownloader runs these tools as separate programs; they are not linked into the
-app's code, so their licenses do not extend to it.
+The license texts are inside the app: **About → Show Licenses in Finder**.
+kDownloader runs these tools as separate programs; they are not linked into its
+code, so their licenses do not extend to it.
 
-The license texts are not kept in this repository: the build fetches them for
-the exact tool versions, pinned with SHA-256 in `tools/manifest.json` (see
-[Updating the bundled tools](#updating-the-bundled-tools)).
+Downloading may be restricted by a site's terms of use or by copyright. Download
+only what you have the right to.

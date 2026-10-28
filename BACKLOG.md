@@ -48,7 +48,7 @@ hovering). Listed in `openspec/changes/archive/2026-10-16-ui-polish-and-ytdlp-up
       warning icon.
 - [ ] Release walkthrough from the zip: 1080p, audio only, VP9 → MKV, playlist
       link error, cookies, cancel, yt-dlp update (`--dry-run --old-ytdlp`
-      archive); record the result in README ("Verified").
+      archive); record the result in DEVELOPMENT.md ("Verified").
 
 ### T3. Spec and quality chores
 

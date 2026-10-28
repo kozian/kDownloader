@@ -21,7 +21,7 @@ for binary in ffmpeg ffprobe deno; do
 done
 cp "$MANIFEST" "$CONTENTS/Resources/tools-manifest.json"
 
-# License notices (see README "Licenses"): the tools' files prepared by
+# License notices (see DEVELOPMENT.md "License notices"): the tools' files prepared by
 # fetch-tools.sh, kDownloader's own license, and how the bundled FFmpeg was built.
 LICENSES="$CONTENTS/Resources/Licenses"
 rm -rf "$LICENSES"

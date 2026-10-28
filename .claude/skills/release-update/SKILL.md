@@ -91,9 +91,29 @@ In a fresh scratchpad folder:
 
 Delete stale `dist/*-dryrun*` archives so only releases remain.
 
-## 7. Report
+## 7. Publish on GitHub
 
-Tool versions before → after, the version and build number, the zip path with
-its SHA-256, the FFmpeg source tarball to hand out with it, the commits and tag
-created, and what was not verified (e.g. the ffmpeg signature). Nothing is
-pushed: the repository has no remote.
+The repository is public at https://github.com/kozian/kDownloader (`origin`, SSH).
+Only the new version gets a GitHub release.
+
+```sh
+git push origin main
+git push origin v<v>
+gh release create v<v> --verify-tag --latest --title "kDownloader <v>" --notes-file <notes> \
+  dist/kDownloader-<v>.zip dist/kDownloader-<v>.zip.sha256 \
+  dist/ffmpeg-<ffmpeg v>.tar.xz dist/ffmpeg-<ffmpeg v>.tar.xz.sha256
+```
+
+The FFmpeg tarball is attached to every release (LGPL), even when FFmpeg did not
+change. Notes, in English: one-line description, "What's new", requirements
+(macOS 14+, Apple Silicon), installing (unzip, move to /Applications,
+`xattr -dr com.apple.quarantine`), a table of the files with their SHA-256, and
+a line that the FFmpeg tarball is its unmodified LGPL source. Show the notes to
+the user before publishing. Afterwards `gh release download v<v>` into a
+scratchpad folder and `shasum -a 256 -c` the files.
+
+## 8. Report
+
+Tool versions before → after, the version and build number, the release URL, the
+SHA-256 of the zip, the commits and tag created, and what was not verified (e.g.
+the ffmpeg signature).

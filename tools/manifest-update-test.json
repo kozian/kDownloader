@@ -2,9 +2,9 @@
   "tools": [
     {
       "name": "yt-dlp",
-      "version": "2026.07.04",
-      "url": "https://github.com/yt-dlp/yt-dlp/releases/download/2026.07.04/yt-dlp_macos.zip",
-      "sha256": "b0724470a0cf6dae5175a87eee05d6e75c5a0c10d2c3015166bd4d34e92b1b7b",
+      "version": "2026.10.21",
+      "url": "https://github.com/yt-dlp/yt-dlp/releases/download/2026.10.21/yt-dlp_macos.zip",
+      "sha256": "2b5251788b36fcbc476568b4eea8cb239f0a775759456f2ff9344a437c52f000",
       "kind": "zip-directory",
       "destination": "yt-dlp",
       "executable": "yt-dlp/yt-dlp_macos",
@@ -14,9 +14,9 @@
     },
     {
       "name": "deno",
-      "version": "2.9.7",
-      "url": "https://github.com/denoland/deno/releases/download/v2.9.7/deno-aarch64-apple-darwin.zip",
-      "sha256": "5cd46d6268f6f78f5d88bdc7159d20bd44cdaa4b3303474839f87ec6fe7ae25c",
+      "version": "2.9.8",
+      "url": "https://github.com/denoland/deno/releases/download/v2.9.8/deno-aarch64-apple-darwin.zip",
+      "sha256": "9f0bf660393da2eaff044cdc7444cb08c73f235849b61d224d825a194ce7c98e",
       "kind": "zip-file",
       "archivePath": "deno",
       "destination": "deno",

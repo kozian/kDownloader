@@ -18,7 +18,6 @@
 # --dry-run --old-ytdlp bundles the previous yt-dlp release (the Debug manifest,
 # tools/manifest-update-test.json) and writes …-dryrun-old-ytdlp.zip, so the
 # in-app update can be tested from a packaged app.
-# RELEASE_COMMIT_TRAILER, when set, is appended to both commit messages.
 set -euo pipefail
 
 ROOT="$(cd "$(dirname "$0")/.." && pwd)"
@@ -121,10 +120,8 @@ sign_and_pack() {
 }
 
 commit() {
-    local message="$1"
-    [[ -n "${RELEASE_COMMIT_TRAILER:-}" ]] && message="$message"$'\n\n'"$RELEASE_COMMIT_TRAILER"
     git add "$XCCONFIG"
-    git commit -q -m "$message"
+    git commit -q -m "$1"
 }
 
 if [[ "$DRY_RUN" == 1 ]]; then

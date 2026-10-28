@@ -6,8 +6,7 @@ description: Update kDownloader's bundled tools (yt-dlp, Deno, ffmpeg) to their 
 # Update the bundled tools and release kDownloader
 
 The user asking for this is the authorization to commit and release. Talk to the
-user in Russian; commit messages stay in English and end with the current
-`Co-Authored-By` trailer.
+user in Russian; commit messages stay in English.
 
 ## 1. Preconditions
 
@@ -68,8 +67,8 @@ minor version is for new features; everything else is a patch.
 
 ```sh
 git add tools Config/Version.xcconfig
-git commit -m "Update bundled tools: yt-dlp <v>, Deno <v>[, ffmpeg <v>]" -m "<trailer>"
-RELEASE_COMMIT_TRAILER="<trailer>" scripts/release.sh [--next X.Y.Z]
+git commit -m "Update bundled tools: yt-dlp <v>, Deno <v>[, ffmpeg <v>]"
+scripts/release.sh [--next X.Y.Z]
 ```
 
 Never pass `--force`-like workarounds: the script refuses an existing tag or zip

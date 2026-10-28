@@ -14,23 +14,47 @@ struct AboutView: View {
             Text("Version \(AppModel.appVersion)")
                 .foregroundStyle(.secondary)
 
-            Grid(alignment: .leading, horizontalSpacing: 16, verticalSpacing: 4) {
-                ForEach([Tool.ytDlp, .ffmpeg, .deno], id: \.self) { tool in
+            VStack(alignment: .leading, spacing: 6) {
+                Text("Bundled dependencies")
+                    .font(.callout.weight(.semibold))
+                Grid(alignment: .leading, horizontalSpacing: 16, verticalSpacing: 4) {
                     GridRow {
-                        Text(tool.displayName)
-                        Text(version(of: tool))
+                        Text(Tool.ytDlp.displayName)
+                        HStack(spacing: 6) {
+                            Text(version(of: .ytDlp))
+                                .foregroundStyle(.secondary)
+                                .textSelection(.enabled)
+                            if model.activeYtDlp?.source == .updated {
+                                Text("updated")
+                                    .font(.caption)
+                                    .foregroundStyle(.secondary)
+                            }
+                        }
+                    }
+                    GridRow {
+                        Text(verbatim: "FFmpeg")
+                        Text(version(of: .ffmpeg))
                             .foregroundStyle(.secondary)
                             .textSelection(.enabled)
-                        if tool == .ytDlp, model.activeYtDlp?.source == .updated {
-                            Text("updated")
-                                .font(.caption)
-                                .foregroundStyle(.secondary)
-                        }
+                    }
+                    GridRow {
+                        Text(Tool.deno.displayName)
+                        Text(version(of: .deno))
+                            .foregroundStyle(.secondary)
+                            .textSelection(.enabled)
                     }
                 }
             }
             .font(.callout)
             .padding(.top, 4)
+
+            Button("Show Licenses in Finder") {
+                if let folder = Bundle.main.resourceURL?.appendingPathComponent("Licenses", isDirectory: true) {
+                    NSWorkspace.shared.open(folder)
+                }
+            }
+            .buttonStyle(.link)
+            .font(.callout)
         }
         .padding(24)
         .frame(width: 300)

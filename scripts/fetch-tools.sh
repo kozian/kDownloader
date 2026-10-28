@@ -2,6 +2,12 @@
 # Downloads the tools listed in the manifest, verifies their SHA-256 and
 # prepares them in the output directory. Valid results are cached.
 #
+# The license files of each tool (manifest "licenses") are written to
+# <out>/licenses/<folder>/ on every run, so they always match the manifest:
+# "url" entries are downloaded and verified like the tools, "fromArchive"
+# entries are extracted from the verified tool archive ("{version}" in the
+# path is replaced with the tool version).
+#
 # Usage: fetch-tools.sh [--manifest <path>] [--out <dir>]
 set -euo pipefail
 
@@ -26,9 +32,10 @@ mkdir -p "$OUT/.stamps" "$CACHE"
 sha256_of() { shasum -a 256 "$1" | awk '{print $1}'; }
 
 # Downloads <url> into the cache unless a file with the expected hash is there.
+# The cache file is named after the URL unless a fourth argument names it.
 fetch() {
     local name="$1" url="$2" sha="$3"
-    local file="$CACHE/$(basename "$url")"
+    local file="$CACHE/${4:-$(basename "$url")}"
     if [[ -f "$file" && "$(sha256_of "$file")" == "$sha" ]]; then
         echo "$file"
         return
@@ -127,3 +134,36 @@ for ((i = 0; i < count; i++)); do
     echo "$sha" > "$stamp"
     echo "==> $name $version ready"
 done
+
+# License files.
+rm -rf "$OUT/licenses"
+for ((i = 0; i < count; i++)); do
+    tool="$(jq -c ".tools[$i]" "$MANIFEST")"
+    jq -e '.licenses' <<<"$tool" > /dev/null || continue
+    name="$(jq -r '.name' <<<"$tool")"
+    version="$(jq -r '.version' <<<"$tool")"
+    folder="$OUT/licenses/$(jq -r '.licenses.folder' <<<"$tool")"
+    mkdir -p "$folder"
+    archive=""
+    while IFS= read -r entry; do
+        as="$(jq -r '.as' <<<"$entry")"
+        if jq -e '.url' <<<"$entry" > /dev/null; then
+            file="$(fetch "$name license $as" "$(jq -r '.url' <<<"$entry")" "$(jq -r '.sha256' <<<"$entry")" \
+                "license-$name-$version-$as")"
+            cp "$file" "$folder/$as"
+        else
+            [[ -n "$archive" ]] || archive="$(fetch "$name" "$(jq -r '.url' <<<"$tool")" "$(jq -r '.sha256' <<<"$tool")")"
+            path="$(jq -r '.fromArchive' <<<"$entry")"
+            path="${path//\{version\}/$version}"
+            case "$archive" in
+                *.zip) unzip -p "$archive" "$path" > "$folder/$as" 2> /dev/null || true ;;
+                *.tar.*) tar -xOf "$archive" "$path" > "$folder/$as" 2> /dev/null || true ;;
+            esac
+            if [[ ! -s "$folder/$as" ]]; then
+                echo "error: $path not found in the $name $version archive" >&2
+                exit 1
+            fi
+        fi
+    done < <(jq -c '.licenses.files[]' <<<"$tool")
+done
+echo "==> Licenses ready in $OUT/licenses"

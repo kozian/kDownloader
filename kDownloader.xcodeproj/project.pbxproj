@@ -137,6 +137,7 @@
 				"$(SRCROOT)/scripts/embed-tools.sh",
 				"$(SRCROOT)/scripts/fetch-tools.sh",
 				"$(SRCROOT)/scripts/build-ffmpeg.sh",
+				"$(SRCROOT)/LICENSE",
 			);
 			name = "Embed Tools";
 			outputFileListPaths = (

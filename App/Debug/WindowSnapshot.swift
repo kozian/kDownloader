@@ -41,12 +41,15 @@ enum WindowSnapshot {
 
     @MainActor
     private static func click(_ text: String) {
-        let numbers = text.replacingOccurrences(of: "move:", with: "").split(separator: ",").compactMap { Double($0) }
+        // "<window title>@x,y" clicks in another window than the main one.
+        let parts = text.split(separator: "@", maxSplits: 1).map(String.init)
+        let title = parts.count == 2 ? parts[0] : "kDownloader"
+        let numbers = parts.last!.replacingOccurrences(of: "move:", with: "").split(separator: ",").compactMap { Double($0) }
         guard numbers.count == 2,
-              let window = NSApp.windows.first(where: { $0.isVisible && $0.title == "kDownloader" }),
+              let window = NSApp.windows.first(where: { $0.isVisible && $0.title == title }),
               let content = window.contentView else { return }
         let point = NSPoint(x: numbers[0], y: content.bounds.height - numbers[1])
-        let types: [NSEvent.EventType] = text.hasPrefix("move") ? [.mouseMoved] : [.leftMouseDown, .leftMouseUp]
+        let types: [NSEvent.EventType] = parts.last!.hasPrefix("move") ? [.mouseMoved] : [.leftMouseDown, .leftMouseUp]
         for type in types {
             if let event = NSEvent.mouseEvent(with: type, location: point, modifierFlags: [], timestamp: ProcessInfo.processInfo.systemUptime,
                                               windowNumber: window.windowNumber, context: nil, eventNumber: 0, clickCount: 1, pressure: 1) {

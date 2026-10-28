@@ -20,3 +20,26 @@ for binary in ffmpeg ffprobe deno; do
     install -m 0755 "$TOOLS/$binary" "$CONTENTS/Helpers/$binary"
 done
 cp "$MANIFEST" "$CONTENTS/Resources/tools-manifest.json"
+
+# License notices (see README "Licenses"): the tools' files prepared by
+# fetch-tools.sh, kDownloader's own license, and how the bundled FFmpeg was built.
+LICENSES="$CONTENTS/Resources/Licenses"
+rm -rf "$LICENSES"
+mkdir -p "$LICENSES/kDownloader"
+cp -R "$TOOLS/licenses/" "$LICENSES/"
+cp "$ROOT/LICENSE" "$LICENSES/kDownloader/LICENSE"
+cp "$ROOT/scripts/build-ffmpeg.sh" "$LICENSES/FFmpeg/build-ffmpeg.sh"
+ffmpeg_version="$(jq -r '.tools[] | select(.name == "ffmpeg") | .version' "$MANIFEST")"
+{
+    echo "FFmpeg $ffmpeg_version (ffmpeg and ffprobe in this app)"
+    echo
+    echo "License: GNU Lesser General Public License 2.1 or later (COPYING.LGPLv2.1)."
+    echo "Built without GPL and non-free components."
+    echo
+    echo "Source: $(jq -r '.tools[] | select(.name == "ffmpeg") | .url' "$MANIFEST")"
+    echo "SHA-256: $(jq -r '.tools[] | select(.name == "ffmpeg") | .sha256' "$MANIFEST")"
+    echo "The same tarball is published next to each kDownloader release as"
+    echo "ffmpeg-$ffmpeg_version.tar.xz. build-ffmpeg.sh is the script that built it."
+    echo
+    "$TOOLS/ffmpeg" -hide_banner -buildconf
+} > "$LICENSES/FFmpeg/BUILD.txt"

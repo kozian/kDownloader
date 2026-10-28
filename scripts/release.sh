@@ -5,9 +5,11 @@
 #
 # 1. Refuses a dirty working tree, an existing tag v<version> or an existing
 #    dist/kDownloader-<version>.zip, so a release never overwrites another one.
-# 2. Builds Release for arm64, checks the bundled tools, signs ad hoc, verifies.
+# 2. Builds Release for arm64, checks the bundled tools and their license files,
+#    signs ad hoc, verifies.
 # 3. Sets the build number (git commit count of the release commit), commits
-#    "Release <version>", tags v<version>, writes the zip and its .sha256.
+#    "Release <version>", tags v<version>, writes the zip and its .sha256, and
+#    publishes the FFmpeg source tarball next to it (scripts/publish-ffmpeg-source.sh).
 # 4. Raises the version to --next (default: next minor) and commits
 #    "Start <next> development", so later builds never carry a released number.
 #
@@ -93,6 +95,14 @@ check_tool "$APP/Contents/Helpers/ffprobe" -version
 check_tool "$APP/Contents/Helpers/deno" --version
 jq -e . "$APP/Contents/Resources/tools-manifest.json" > /dev/null
 
+echo "==> Checking licenses"
+for file in kDownloader/LICENSE \
+    FFmpeg/COPYING.LGPLv2.1 FFmpeg/LICENSE.md FFmpeg/BUILD.txt FFmpeg/build-ffmpeg.sh \
+    Deno/LICENSE.md \
+    yt-dlp/LICENSE yt-dlp/THIRD_PARTY_LICENSES.txt; do
+    [[ -s "$APP/Contents/Resources/Licenses/$file" ]] || fail "license file Licenses/$file is missing or empty in the built app"
+done
+
 BUILT="$(/usr/libexec/PlistBuddy -c 'Print :CFBundleShortVersionString' "$APP/Contents/Info.plist")"
 [[ "$BUILT" == "$VERSION" ]] || fail "built app reports $BUILT, expected $VERSION"
 
@@ -132,6 +142,8 @@ xcodebuild -project kDownloader.xcodeproj -scheme kDownloader -configuration Rel
     || { git checkout -- "$XCCONFIG"; fail "Release build failed; see .build/release.log"; }
 [[ "$(/usr/libexec/PlistBuddy -c 'Print :CFBundleVersion' "$APP/Contents/Info.plist")" == "$BUILD_NUMBER" ]] \
     || { git checkout -- "$XCCONFIG"; fail "built app does not carry build number $BUILD_NUMBER"; }
+# The LGPL source of the bundled ffmpeg, before the zip so a failure leaves no release behind.
+"$ROOT/scripts/publish-ffmpeg-source.sh" "$DIST" || { git checkout -- "$XCCONFIG"; fail "could not publish the FFmpeg source"; }
 sign_and_pack
 commit "Release $VERSION"
 [[ "$(git rev-list --count HEAD)" == "$BUILD_NUMBER" ]] || fail "release commit is #$(git rev-list --count HEAD), expected #$BUILD_NUMBER"

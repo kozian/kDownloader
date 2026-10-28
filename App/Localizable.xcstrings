@@ -151,6 +151,16 @@
         }
       }
     },
+    "Bundled dependencies": {
+      "localizations": {
+        "ru": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Используемые зависимости"
+          }
+        }
+      }
+    },
     "Bundled tool “%@” is not working: %@": {
       "localizations": {
         "ru": {
@@ -747,6 +757,16 @@
           "stringUnit": {
             "state": "translated",
             "value": "Сохранить в:"
+          }
+        }
+      }
+    },
+    "Show Licenses in Finder": {
+      "localizations": {
+        "ru": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Показать лицензии в Finder"
           }
         }
       }

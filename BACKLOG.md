@@ -78,6 +78,18 @@ hovering). Listed in `openspec/changes/archive/2026-10-16-ui-polish-and-ytdlp-up
 - [ ] Download progress on the Dock icon.
 - [ ] Prevent system sleep while a download runs (`IOPMAssertion`).
 
+### T6. An original app icon
+
+`Design/AppIcon.png` is a recolored version of an old YouTube iOS icon: the
+design belongs to others (and YouTube's look is a trademark), so recoloring
+does not make it ours.
+
+- [ ] Draw a new icon from scratch. The idea of a retro TV may stay, but the
+      shape, proportions, screen and details must be our own, with no red
+      "play" screen or anything else that recalls YouTube.
+- [ ] Replace `Design/AppIcon.png`, regenerate with `scripts/make-icon.swift`,
+      check Finder, the Dock and the About window.
+
 ## Ideas to think about
 
 ### I1. Playlists

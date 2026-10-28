@@ -6,6 +6,10 @@
 # GitHub release. ffmpeg: the newest release tarball from ffmpeg.org; its
 # .asc signature is verified when gpg is installed, and its SHA-256 is pinned.
 #
+# The license files downloaded from the yt-dlp and Deno repositories are
+# repinned to the new release tags; their SHA-256 is taken from the downloaded
+# file, since the projects publish no checksums for them.
+#
 # Afterwards the Debug manifest (tools/manifest-update-test.json) is rewritten:
 # the same tools, but yt-dlp one release behind, so Debug builds can test the
 # in-app update against the real latest release.
@@ -58,6 +62,22 @@ set_tool() {
     mv "$tmp" "$MANIFEST"
 }
 
+# Points the license entry <as> of tool <name> in <manifest> to <url> and pins
+# the SHA-256 of the file found there.
+pin_license() {
+    local manifest="$1" name="$2" as="$3" url="$4" sha tmp
+    sha="$(curl -fsSL "$url" | shasum -a 256 | awk '{print $1}')"
+    if [[ ! "$sha" =~ ^[0-9a-f]{64}$ ]]; then
+        echo "error: cannot download the $name license from $url" >&2
+        exit 1
+    fi
+    tmp="$(mktemp)"
+    jq --arg n "$name" --arg a "$as" --arg u "$url" --arg s "$sha" \
+        '(.tools[] | select(.name == $n) | .licenses.files[] | select(.as == $a)) |= (.url = $u | .sha256 = $s)' \
+        "$manifest" > "$tmp"
+    mv "$tmp" "$manifest"
+}
+
 report() {
     if [[ "$2" == "$3" ]]; then
         echo "$1: $2 (unchanged)"
@@ -72,6 +92,7 @@ tag="$(github_latest yt-dlp/yt-dlp | jq -r '.tag_name')"
 base="https://github.com/yt-dlp/yt-dlp/releases/download/$tag"
 sha="$(curl -fsSL "$base/SHA2-256SUMS" | checksum_for yt-dlp_macos.zip)"
 set_tool yt-dlp "$tag" "$base/yt-dlp_macos.zip" "$sha"
+pin_license "$MANIFEST" yt-dlp LICENSE "https://raw.githubusercontent.com/yt-dlp/yt-dlp/$tag/LICENSE"
 report yt-dlp "$old" "$tag"
 
 # Deno
@@ -80,6 +101,7 @@ tag="$(github_latest denoland/deno | jq -r '.tag_name')"
 base="https://github.com/denoland/deno/releases/download/$tag"
 sha="$(curl -fsSL "$base/deno-aarch64-apple-darwin.zip.sha256sum" | checksum_for deno-aarch64-apple-darwin.zip)"
 set_tool deno "${tag#v}" "$base/deno-aarch64-apple-darwin.zip" "$sha"
+pin_license "$MANIFEST" deno LICENSE.md "https://raw.githubusercontent.com/denoland/deno/$tag/LICENSE.md"
 report deno "$old" "${tag#v}"
 
 # ffmpeg
@@ -124,5 +146,6 @@ jq --arg v "$previous" --arg u "$base/yt-dlp_macos.zip" --arg s "$sha" \
     '(.tools[] | select(.name == "yt-dlp")) |= (.version = $v | .url = $u | .sha256 = $s)' \
     "$MANIFEST" > "$DEBUG_MANIFEST.tmp"
 mv "$DEBUG_MANIFEST.tmp" "$DEBUG_MANIFEST"
+pin_license "$DEBUG_MANIFEST" yt-dlp LICENSE "https://raw.githubusercontent.com/yt-dlp/yt-dlp/$previous/LICENSE"
 report "yt-dlp (Debug builds)" "$old_debug" "$previous"
 

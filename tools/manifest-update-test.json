@@ -10,7 +10,21 @@
       "executable": "yt-dlp/yt-dlp_macos",
       "versionArgs": [
         "--version"
-      ]
+      ],
+      "licenses": {
+        "folder": "yt-dlp",
+        "files": [
+          {
+            "url": "https://raw.githubusercontent.com/yt-dlp/yt-dlp/2026.10.21/LICENSE",
+            "sha256": "7e12e5df4bae12cb21581ba157ced20e1986a0508dd10d0e8a4ab9a4cf94e85c",
+            "as": "LICENSE"
+          },
+          {
+            "fromArchive": "_internal/THIRD_PARTY_LICENSES.txt",
+            "as": "THIRD_PARTY_LICENSES.txt"
+          }
+        ]
+      }
     },
     {
       "name": "deno",
@@ -23,7 +37,17 @@
       "executable": "deno",
       "versionArgs": [
         "--version"
-      ]
+      ],
+      "licenses": {
+        "folder": "Deno",
+        "files": [
+          {
+            "url": "https://raw.githubusercontent.com/denoland/deno/v2.9.8/LICENSE.md",
+            "sha256": "f62497fffecc0852960c8d3e6934b9db86d16396e9b604072e923892cae3a588",
+            "as": "LICENSE.md"
+          }
+        ]
+      }
     },
     {
       "name": "ffmpeg",
@@ -38,7 +62,20 @@
       "executable": "ffmpeg",
       "versionArgs": [
         "-version"
-      ]
+      ],
+      "licenses": {
+        "folder": "FFmpeg",
+        "files": [
+          {
+            "fromArchive": "ffmpeg-{version}/COPYING.LGPLv2.1",
+            "as": "COPYING.LGPLv2.1"
+          },
+          {
+            "fromArchive": "ffmpeg-{version}/LICENSE.md",
+            "as": "LICENSE.md"
+          }
+        ]
+      }
     }
   ]
 }

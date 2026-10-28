@@ -4,7 +4,7 @@
 // Usage: scripts/snapshot.swift <output-directory>
 //        scripts/snapshot.swift --menu <item title>
 //        scripts/snapshot.swift --session <command>   (type:<text>, analyze, cancel, retry, …)
-//        scripts/snapshot.swift --click <x,y>          (points from the main window's top-left)
+//        scripts/snapshot.swift --click [<window title>@]<x,y>  (points from the window's top-left; main window by default)
 //        scripts/snapshot.swift --key escape|down|return
 import Foundation
 

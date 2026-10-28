@@ -61,7 +61,7 @@ Release builds.
 
 ## App icon
 
-The icon is generated from `Design/AppleIcon.png` (a TV body with a dark rounded
+The icon is generated from `Design/AppIcon.png` (a TV body with a dark rounded
 frame on a plain background):
 
 ```sh
@@ -122,7 +122,9 @@ release before the latest, and prints which versions changed. yt-dlp and Deno ar
 the checksums published with their releases. For ffmpeg, the `.asc` signature
 is verified only when `gpg` is installed and the FFmpeg release key
 (`FCF986EA15E6E293A5644F10B4322F04D67658D8`) is imported; otherwise the script
-prints a warning. Commit the updated manifest and make a new release.
+prints a warning. The license files of yt-dlp and Deno are repinned to the new
+release tags (see [Licenses](#licenses)). Commit the updated manifests and make
+a new release.
 
 ## Releasing
 
@@ -138,7 +140,12 @@ for arm64, checks that every bundled tool is arm64 and reports its version, sign
 the app ad hoc and verifies the signature, commits "Release <version>" with the
 build number (git commit count of that commit), tags it, writes
 `dist/kDownloader-<version>.zip` with its `.sha256`, and then raises the version
-to the next minor (or `--next`) in a "Start <next> development" commit.
+to the next minor (or `--next`) in a "Start <next> development" commit. Releases
+and dry runs both check that every license file is in the app (see
+[Licenses](#licenses)). A release also writes the source of the bundled FFmpeg,
+`dist/ffmpeg-<ffmpeg version>.tar.xz` with its `.sha256`
+(`scripts/publish-ffmpeg-source.sh`); a tarball already there for that version is
+kept.
 
 For a verification build that changes nothing, use:
 
@@ -149,6 +156,10 @@ scripts/release.sh --dry-run       # writes dist/kDownloader-<version>-dryrun.zi
 ## Installing (friends and family)
 
 The app is signed ad hoc, not notarized, so Gatekeeper blocks the first launch.
+
+Hand out `kDownloader-<version>.zip` together with the FFmpeg source tarball from
+`dist/` (`ffmpeg-<ffmpeg version>.tar.xz`), or a link to a folder with both: the
+LGPL requires the FFmpeg source to be available to everyone who gets the app.
 
 1. Unzip `kDownloader-<version>.zip` and move `kDownloader.app` to
    `/Applications`.
@@ -163,3 +174,25 @@ The app is signed ad hoc, not notarized, so Gatekeeper blocks the first launch.
 
 To use cookies from Safari (for age-restricted or sign-in-only videos), grant
 the app **Full Disk Access** in **System Settings → Privacy & Security**.
+
+## Licenses
+
+kDownloader's own code is released under the [MIT license](LICENSE).
+
+The distributed app also contains third-party tools, each under its own license.
+Their license texts are in the app at
+`kDownloader.app/Contents/Resources/Licenses/`, one folder per component; the
+About window's "Show Licenses in Finder" opens that folder.
+
+| Component | License | Notes |
+|---|---|---|
+| [yt-dlp](https://github.com/yt-dlp/yt-dlp) | Unlicense | The PyInstaller build bundles Python, OpenSSL, mutagen (GPL-2.0+) and other components; their licenses and the maintainers' offer of their source are in its `THIRD_PARTY_LICENSES.txt`. |
+| [FFmpeg](https://ffmpeg.org) (ffmpeg, ffprobe) | LGPL-2.1+ | Built from the official source tarball without GPL or non-free parts. The configure options and build script are in the app; the source tarball is published next to each release as `ffmpeg-<version>.tar.xz`. |
+| [Deno](https://deno.com) | MIT | Deno embeds V8 (BSD-3-Clause) and Rust crates (mostly MIT / Apache-2.0); Deno does not publish their notices together, so only Deno's own license is included. |
+
+kDownloader runs these tools as separate programs; they are not linked into the
+app's code, so their licenses do not extend to it.
+
+The license texts are not kept in this repository: the build fetches them for
+the exact tool versions, pinned with SHA-256 in `tools/manifest.json` (see
+[Updating the bundled tools](#updating-the-bundled-tools)).

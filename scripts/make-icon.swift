@@ -1,7 +1,7 @@
 #!/usr/bin/env swift
 // Builds App/Assets.xcassets/AppIcon.appiconset from the source picture.
 //
-//     swift scripts/make-icon.swift [--source Design/AppleIcon.png] [--threshold 0.68]
+//     swift scripts/make-icon.swift [--source Design/AppIcon.png] [--threshold 0.68]
 //
 // The source is a TV body with a dark rounded frame on a plain background with its
 // own drop shadow. The body is cut out along the traced outer edge of the frame
@@ -10,7 +10,7 @@
 // and given a soft shadow. All 10 icon sizes and Contents.json are written.
 import AppKit
 
-var sourcePath = "Design/AppleIcon.png"
+var sourcePath = "Design/AppIcon.png"
 var threshold = 0.68
 var arguments = Array(CommandLine.arguments.dropFirst())
 while !arguments.isEmpty {

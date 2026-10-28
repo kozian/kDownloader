@@ -69,6 +69,9 @@ hovering). Listed in `openspec/changes/archive/2026-10-16-ui-polish-and-ytdlp-up
       which misleads about the overall progress. Show one overall progress (for
       example weighted by stream sizes) with the current stage as a label, or
       steps "1 of 3: video · 2 of 3: audio · 3 of 3: processing".
+- [ ] Rework the buttons shown after a download finishes. "New Download"
+      («Другое видео») is misleading and must be replaced. How the finished
+      state should look is still open (see I5).
 
 ### T5. Small conveniences
 
@@ -155,3 +158,17 @@ Questions:
 - Filename template; speed limit; proxy.
 - Live streams: record from now, or after the stream ends.
 - Menu bar mode.
+
+### I5. The finished state of a download
+
+Today a success card shows "Download complete", the file name, "Show in Finder"
+and "New Download" («Другое видео»). "New Download" only clears the link field,
+which the label does not convey.
+
+Questions:
+- Which actions does a user want after a download: open the file, show it in
+  Finder, download the same video in another format, paste the next link?
+- Is a "clear" action needed at all, given that pasting a new link already
+  replaces the old one and starts the analysis?
+- Should the finished state merge with the single Download/progress control
+  from T4 (the control turns into "Open" / "Show in Finder")?
